@@ -144,6 +144,16 @@
 
         </security:authorize>
         <security:authorize access="hasRole('ADMINISTRATOR')">
+            <a href="configuration/administrator/edit.do" id="cfg"
+               class="w3-bar-item w3-button w3-padding w3-xlarge" name="menuItem"> <i
+                    class="fa fa-gear fa-fw w3-margin-right"></i> <spring:message
+                    code="label.configuration"/>
+            </a>
+            <a href="tabooWord/administrator/list.do"
+               class="w3-bar-item w3-button w3-padding w3-xlarge"> <i
+                    class="fa fa-ban fa-fw w3-margin-right"></i> <spring:message
+                    code="label.tabooWords"/>
+            </a>
             <a href="dashboard/administrator/display.do" id="dashboard"
                class="w3-bar-item w3-button w3-padding w3-xlarge" name="menuItem"> <i
                     class="fa fa-dashboard fa-fw w3-margin-right"></i> <spring:message

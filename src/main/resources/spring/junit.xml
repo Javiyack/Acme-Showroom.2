@@ -20,9 +20,5 @@
 
 	<import resource="datasource.xml" />
 	<import resource="config/packages.xml" />
-	<bean name="validator"
-		  class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
-		<property name="validationMessageSource" ref="messageSource" />
-		<qualifier value="validator"/>
-	</bean>
+	
 </beans>

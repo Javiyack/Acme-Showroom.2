@@ -71,6 +71,7 @@
         <property name="active" value="true"/>
     </bean>
 
+
     <!-- Actors -->
 
     <!-- Administrators Actors -->
@@ -78,8 +79,8 @@
     <bean id="administrator1" class="domain.Administrator">
         <property name="name" value="Javier"/>
         <property name="surname" value="Llach"/>
-        <property name="email" value="javierll@gmail.com"/>
-        <property name="phone" value="666777888"/>
+        <property name="email" value="javillach@gmail.com"/>
+        <property name="phone" value="658357522"/>
         <property name="address" value="C/ Beatriz de Suabia 76."/>
         <property name="userAccount" ref="userAccountAdmin"/>
         <property name="follows">
@@ -154,6 +155,61 @@
             <list>
             </list>
         </property>
+
+    </bean>
+
+
+    <!-- CONFIGURATION -->
+    <bean id="configuration" class="domain.Configuration">
+        <property name="systemTitle" value="Acme Showroom"/>
+        <property name="logo" value="images/logo.png"/>
+        <property name="welcomeMessageEs"
+                  value="Pruebalo!"/>
+        <property name="welcomeMessageEn"
+                  value="Check it out!"/>
+        <property name="tabooWords">
+            <list>
+                <value>sex</value>
+                <value>viagra</value>
+                <value>cialis</value>
+                <value>spambox</value>
+                <value>trashbox</value>
+            </list>
+
+        </property>
+        <property name="positiveAuditWords">
+            <list>
+                <value>not bad</value>
+                <value>acceptable</value>
+                <value>good</value>
+                <value>excellent</value>
+                <value>terrific</value>
+                <value>extraordinary</value>
+            </list>
+
+        </property>
+        <property name="negativeAuditWords">
+            <list>
+                <value>below average</value>
+                <value>bad</value>
+                <value>poor</value>
+                <value>unacceptable</value>
+                <value>horrible</value>
+            </list>
+
+        </property>
+        <property name="stoppingPositiveAuditWords">
+            <list>
+                <value>but</value>
+            </list>
+
+        </property>
+        <property name="stoppingNegativeAuditWords">
+            <list>
+                <value>unless</value>
+            </list>
+
+        </property>
     </bean>
 
     <!-- Showrooms -->
@@ -165,12 +221,14 @@
                   value="http://caritasespanola.org/economiasolidaria/wp-content/uploads/Logo-ATT-300x132.jpg"/>
         <property name="user" ref="user1"/>
     </bean>
+
     <bean id="showroom2" class="domain.Showroom">
         <property name="name" value="SimBarBa"/>
-        <property name="description" value="Artículos de peluqueria y cosmetica"/>
+        <property name="description" value="Articulos de peluqueria y cosmetica"/>
         <property name="logo" value="https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_TV_2015.png"/>
         <property name="user" ref="user1"/>
     </bean>
+
     <bean id="showroom3" class="domain.Showroom">
         <property name="name" value="TARA"/>
         <property name="description"
@@ -188,7 +246,9 @@
         <property name="price" value="99.99"/>
         <property name="SKU" value="720615-XXXX99"/>
         <property name="showroom" ref="showroom1"/>
+
     </bean>
+
     <bean id="item2" class="domain.Item">
         <property name="title" value="Sandalias"/>
         <property name="description" value="Del pescador"/>
@@ -196,6 +256,7 @@
         <property name="price" value="199.99"/>
         <property name="SKU" value="720615-XXXX00"/>
         <property name="showroom" ref="showroom1"/>
+
     </bean>
 
     <bean id="item3" class="domain.Item">
@@ -205,7 +266,9 @@
         <property name="price" value="19.99"/>
         <property name="SKU" value="720615-XXXX01"/>
         <property name="showroom" ref="showroom3"/>
+
     </bean>
+
     <bean id="item4" class="domain.Item">
         <property name="title" value="RainJacket"/>
         <property name="description" value="Chaqueta deportiva preparada para la lluvia"/>
@@ -215,6 +278,7 @@
         <property name="showroom" ref="showroom1"/>
 
     </bean>
+
     <bean id="item5" class="domain.Item">
         <property name="title" value="Secador Sahara"/>
         <property name="description" value="Secador de pelo de 15000W de potencias. Podrias cocinar un cordero..."/>
@@ -224,6 +288,7 @@
         <property name="showroom" ref="showroom2"/>
 
     </bean>
+
     <bean id="item6" class="domain.Item">
         <property name="title" value="Botas Panama Jack"/>
         <property name="description"
@@ -232,5 +297,8 @@
         <property name="price" value="99.99"/>
         <property name="SKU" value="720615-YYYY99"/>
         <property name="showroom" ref="showroom3"/>
+
     </bean>
+
+
 </beans>
