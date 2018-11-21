@@ -1,0 +1,27 @@
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+       
+<tiles-definitions>
+
+	<definition name="admin/create" extends="master.page">	
+		<put-attribute name="title" value="crear nuevo Administrador" />
+		<put-attribute name="body" value="/views/admin/edit.jsp" />
+	</definition>
+		
+	<definition name="admin/edit" extends="master.page">	
+		<put-attribute name="title" value="Editar datos personales" />
+		<put-attribute name="body" value="/views/admin/edit.jsp" />
+	</definition>
+	
+		
+	<definition name="admin/display" extends="master.page">	
+		<put-attribute name="title" value="" />
+		<put-attribute name="body" value="/views/admin/edit.jsp" />
+	</definition>
+	<definition name="admin/list" extends="master.page">	
+		<put-attribute name="title" value="" />
+		<put-attribute name="body" value="/views/admin/list.jsp" />
+	</definition>
+	
+</tiles-definitions>
