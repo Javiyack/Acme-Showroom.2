@@ -52,22 +52,27 @@
                             <div class="col-50">
                                 <spring:message code="label.showroom"/>: <jstl:out value="${showroom.name}"/>
                             </div>
-                            <jstl:if test="${showroom.id!=0}">
-                                <spring:message var="msgSaveFirst" code="msg.save.first"/>
-                                <jstl:set var="url" value="/comment/actor/create.do?objectId=${showroom.id}"/>
-                                <spring:message code="label.new" var="newTitle"/>
-                                <spring:message code="label.comment" var="newCommentTitle"/>
-                                <spring:message code="label.comments" var="comentsTitle"/>
-                                <div class="col-40">
-                                    <a><i class="fa fa-commenting-o font-awesome w3-xxlarge w3-padding zoom iButton toRight"
+                            <!-- Modulo comentar  -->
+                            <div class="col-40">
+                                    <jstl:if test="${showroom.id!=0}">
+                                        <spring:message var="msgSaveFirst" code="msg.save.first"/>
+                                        <jstl:set var="root" value="${requestScope['javax.servlet.forward.request_uri']}"/>
+                                        <jstl:set var="params" value="<%= request.getQueryString() %>"/>
+                                        <jstl:set var="path" value="${root}?${params}"/>
+                                        <jstl:set var="url" value="/comment/actor/create.do?objectId=${showroom.id}&path=${path}"/>
+                                        <spring:message code="label.new" var="newTitle"/>
+                                        <spring:message code="label.comment" var="newCommentTitle"/>
+                                        <spring:message code="label.comments" var="comentsTitle"/>
+
+                                        <a><i class="fa fa-commenting-o font-awesome w3-xxlarge w3-padding zoom iButton toRight"
                                           onclick="showConditionalAlert('${msgSaveFirst}','${showroom.id}','${url}');"
                                           title="${newTitle} ${newCommentTitle}"></i></a>
-                                    <a href="comment/actor/list.do?objectId=${showroom.id}">
+                                    <a href="comment/actor/list.do?objectId=${showroom.id}&path=${path}">
                                         <i class="fa fa-comments-o font-awesome w3-xxlarge w3-padding zoom iButton toRight"
                                            title="${comentsTitle}"></i></a>
+                                    </jstl:if>
 
                                 </div>
-                            </jstl:if>
                         </div>
 
 

@@ -44,7 +44,7 @@
 		<spring:message code="label.comments" />
 		<jstl:if test="${commented != null and !included}">
 			<spring:message code="label.about" />
-			<jstl:out value="${commented}" />
+			<a href="${path}"> <jstl:out value="${commented}" /></a>
 		</jstl:if>
 	</legend>
 	<jstl:if test="${pageSize == null}">

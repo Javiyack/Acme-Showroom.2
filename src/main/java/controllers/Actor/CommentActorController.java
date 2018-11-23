@@ -4,8 +4,7 @@ package controllers.Actor;
 import controllers.AbstractController;
 import domain.Comment;
 import domain.Commentable;
-import domain.Item;
-import domain.Showroom;
+import forms.CommentForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -36,13 +35,14 @@ public class CommentActorController extends AbstractController {
 
     // List ------------------------------------------------------------------
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ModelAndView list(Integer objectId, final Integer pageSize) {
+    public ModelAndView list(Integer objectId, final Integer pageSize, String path) {
         ModelAndView result;
         final Collection <Comment> comments;
         comments = this.commentService.findByCommentedObjectId(objectId);
         Commentable commentedObject = this.commentService.findCommentedObjectByCommentedObjectId(objectId);
         result = new ModelAndView("comment/list");
         result.addObject("comments", comments);
+        result.addObject("path", path);
         result.addObject("commented", commentedObject.getObjectName());
         result.addObject("requestUri", "comment/actor/list.do");
         result.addObject("pageSize", (pageSize != null) ? pageSize : 5);
@@ -52,14 +52,19 @@ public class CommentActorController extends AbstractController {
 
     // Display user -----------------------------------------------------------
     @RequestMapping(value = "/display", method = RequestMethod.GET)
-    public ModelAndView display(@RequestParam final int commentId) {
+    public ModelAndView display(@RequestParam final int commentId, String path) {
         ModelAndView result;
 
         try {
             final Comment comment = this.commentService.findOne(commentId);
             Assert.notNull(comment, "msg.not.found.resource");
+            final CommentForm commentForm = new CommentForm(comment);
+            commentForm.setPath(path);
             result = new ModelAndView("comment/display");
-            result.addObject("comment", comment);
+            Commentable target = commentService.findCommentedObjectByCommentedObjectId(comment.getCommentedObjectId());
+            commentForm.setPath(path);
+            commentForm.setTargetName(target.getObjectName());
+            result.addObject("commentForm", commentForm);
             result.addObject("display", true);
 
         } catch (Throwable oops) {
@@ -75,24 +80,33 @@ public class CommentActorController extends AbstractController {
     // Create ---------------------------------------------------------------
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public ModelAndView create(@RequestParam final int objectId) {
+    public ModelAndView create(@RequestParam final int objectId, String path) {
         ModelAndView result;
         final Comment comment = commentService.create();
+        Commentable target = commentService.findCommentedObjectByCommentedObjectId(objectId);
         comment.setCommentedObjectId(objectId);
         result = this.createEditModelAndView(comment);
+        final CommentForm commentForm = new CommentForm(comment);
+        commentForm.setPath(path);
+        commentForm.setTargetName(target.getObjectName());
+        result.addObject("commentForm", commentForm);
         return result;
     }
 
     // Edit  -----------------------------------------------------------
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    public ModelAndView edit(@RequestParam final int commentId) {
+    public ModelAndView edit(@RequestParam final int commentId, String path) {
         ModelAndView result;
 
         try {
             final Comment comment = this.commentService.findOne(commentId);
             Assert.notNull(comment, "msg.not.found.resource");
-            result = new ModelAndView("comment/edit");
-            result.addObject("comment", comment);
+            result = this.createEditModelAndView(comment);
+            Commentable target = commentService.findCommentedObjectByCommentedObjectId(comment.getCommentedObjectId());
+            final CommentForm commentForm = new CommentForm(comment);
+            commentForm.setPath(path);
+            commentForm.setTargetName(target.getObjectName());
+            result.addObject("commentForm", commentForm);
             result.addObject("display", false);
 
         } catch (Throwable oops) {
@@ -109,16 +123,18 @@ public class CommentActorController extends AbstractController {
     // Save mediante Post ---------------------------------------------------
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-    public ModelAndView save(Comment comment, final BindingResult binding) {
+    public ModelAndView save(CommentForm commentForm, final BindingResult binding) {
         ModelAndView result;
-        comment = commentService.recontruct(comment, binding);
-        if (binding.hasErrors())
+        Comment comment = commentService.reconstruct(commentForm, binding);
+        if (binding.hasErrors()) {
             result = this.createEditModelAndView(comment);
+            result.addObject("commentForm", commentForm);
+        }
         else
             try {
                 comment = this.commentService.save(comment);
                 result = new ModelAndView("comment/display");
-                result.addObject("comment", comment);
+                result.addObject("commentForm", commentForm);
                 result.addObject("display", true);
                 result.addObject("info", "msg.commit.ok");
             } catch (final Throwable oops) {
@@ -140,8 +156,10 @@ public class CommentActorController extends AbstractController {
 
     protected ModelAndView createEditModelAndView(final Comment model, final String message) {
         final ModelAndView result;
+        final CommentForm commentForm = new CommentForm(model);
         result = new ModelAndView("comment/edit");
         result.addObject("comment", model);
+        result.addObject("commentForm", commentForm);
         result.addObject("requestUri", "comment/actor/create.do");
         result.addObject("edition", true);
         result.addObject("creation", model.getId() == 0);

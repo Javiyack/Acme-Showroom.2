@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import domain.Commentable;
+import forms.CommentForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,9 +39,12 @@ public class CommentService {
 
     //Create
     public Comment create() {
+        Actor actor = actorService.findByPrincipal();
+        Assert.notNull(actor, "msg.not.logged.block");
         final Comment result = new Comment();
         result.setMoment(new Date());
         result.setRating(0);
+        result.setActor(actor);
         return result;
     }
 
@@ -62,11 +66,31 @@ public class CommentService {
     public Commentable findCommentedObjectByCommentedObjectId(Integer objectId) {
         return commentRepository.findCommentedObjectByCommentedObjectId(objectId);    }
 
-    public Comment recontruct(Comment comment, BindingResult binding ) {
+    public Comment reconstruct(Comment comment, BindingResult binding ) {
         Actor actor = actorService.findByPrincipal();
         Assert.notNull(actor, "msg.not.logged.block");
         comment.setActor(actor);
         this.validator.validate(comment, binding);
+        return comment;
+    }
+    public Comment reconstruct(CommentForm commentForm, BindingResult binding ) {
+        Comment comment;
+        if(commentForm.getId()!=0){
+            comment = commentRepository.findOne(commentForm.getId());
+        }else{
+            Actor actor = actorService.findByPrincipal();
+            Assert.notNull(actor, "msg.not.logged.block");
+            comment = this.create();
+            comment.setActor(actor);
+            comment.setRating(commentForm.getRating());
+            comment.setMoment(new Date());
+            comment.setTitle(commentForm.getTitle());
+            comment.setText(commentForm.getText());
+            comment.setPictures(commentForm.getPictures());
+            comment.setCommentedObjectId(commentForm.getCommentedObjectId());
+            commentForm.setActor(actor);
+            this.validator.validate(comment, binding);
+        }
         return comment;
     }
 }

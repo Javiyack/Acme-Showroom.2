@@ -2,11 +2,14 @@
 package forms;
 
 import domain.Actor;
+import domain.Comment;
 import domain.Item;
 import domain.Showroom;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
+import utilities.URLCollection;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -15,7 +18,7 @@ import java.util.Collection;
 import java.util.Date;
 
 
-public class CommentForm {
+public class CommentForm extends ClassForm{
 
     private String title;
     private String text;
@@ -24,11 +27,27 @@ public class CommentForm {
     private Collection<String> pictures;
     // Relationships
     private Actor actor;
-    private Item item;
-    private Showroom showroom;
+    private int commentedObjectId;
+    private String targetName;
+    private String path;
     // Static
-    public static String SHOWROOM       = "Showroom";
-    public static String ITEM       = "Item";
+    public CommentForm(){
+        super();
+        this.setVersion(0);
+        this.setId(0);
+
+    }
+    public CommentForm(Comment commet){
+        this.setId(commet.getId());
+        this.setVersion(commet.getVersion());
+        this.setTitle(commet.getTitle());
+        this.setMoment(commet.getMoment());
+        this.setText(commet.getText());
+        this.setPictures(commet.getPictures());
+        this.setRating(commet.getRating());
+        this.setActor(commet.getActor());
+        this.setCommentedObjectId(commet.getCommentedObjectId());
+    }
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
@@ -60,26 +79,8 @@ public class CommentForm {
         this.title = title;
     }
 
-    @Valid
-    @ManyToOne(optional = true)
-    public Item getItem() {
-        return this.item;
-    }
 
-    public void setItem(final Item parentFolder) {
-        this.item = parentFolder;
-    }
-
-    @ManyToOne(optional = true)
-    @Valid
-    public Showroom getShowroom() {
-        return showroom;
-    }
-
-    public void setShowroom(Showroom showroom) {
-        this.showroom = showroom;
-    }
-
+    @Range(min = 0, max = 3)
     public Integer getRating() {
         return rating;
     }
@@ -90,6 +91,7 @@ public class CommentForm {
 
     @ElementCollection
     @NotNull
+    @URLCollection
     public Collection<String> getPictures() {
         return pictures;
     }
@@ -100,12 +102,40 @@ public class CommentForm {
 
     @NotNull
     @Valid
-    @ManyToOne(optional = false)
     public Actor getActor() {
         return actor;
     }
 
     public void setActor(Actor user) {
         this.actor = user;
+    }
+
+    @NotNull
+    public int getCommentedObjectId() {
+        return commentedObjectId;
+    }
+
+    public void setCommentedObjectId(int commentedObjectId) {
+        this.commentedObjectId = commentedObjectId;
+    }
+
+    @NotBlank
+    @SafeHtml
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    @NotBlank
+    @SafeHtml
+    public String getTargetName() {
+        return targetName;
+    }
+
+    public void setTargetName(String targetName) {
+        this.targetName = targetName;
     }
 }

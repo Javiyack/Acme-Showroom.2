@@ -38,6 +38,17 @@
         <form:hidden path="item.id"/>
         <form:hidden path="user.id"/>
         <div class="row">
+            <div class="col-100" style="padding-bottom: 0px!important;">
+                <a href="" class="iButton" style="padding-bottom: 0px!important;">Acme-Showroom/</a>
+                <a href="item/display.do?itemId=${request.item.id}" class="iButton" style="padding-bottom: 0px!important;">
+                    <jstl:out value="${request.item.title}"/>/</a>
+                <a href="actor/actor/display.do?actorId=${request.user.id}" class="fa fa-user font-awesome w3-margin-right toRight">
+                    <jstl:out value="${request.user.userAccount.username}"/>
+                </a>
+                <hr style="margin-top: 0.2em;">
+            </div>
+        </div>
+        <div class="row">
             <div class="col-50">
                 <acme:textbox code="label.item" path="item.title"
                               readonly="true"/>

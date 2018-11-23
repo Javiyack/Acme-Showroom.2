@@ -60,22 +60,26 @@
                         <div class="col-50">
                             <spring:message code="label.item"/>: <jstl:out value="${item.title}"/>
                         </div>
-                        <jstl:if test="${item.id!=0}">
-                            <spring:message var="msgSaveFirst" code="msg.save.first"/>
-                            <jstl:set var="url" value="/comment/actor/create.do?objectId=${item.id}"/>
-                            <spring:message code="label.new" var="newTitle"/>
-                            <spring:message code="label.comment" var="newCommentTitle"/>
-                            <spring:message code="label.comments" var="comentsTitle"/>
-                            <div class="col-40 toRight">
+                        <!-- Modulo Comentar -->
+                        <div class="col-40 toRight">
+                            <jstl:if test="${item.id!=0}">
+                                <spring:message var="msgSaveFirst" code="msg.save.first"/>
+                                <jstl:set var="root" value="${requestScope['javax.servlet.forward.request_uri']}"/>
+                                <jstl:set var="params" value="<%= request.getQueryString() %>"/>
+                                <jstl:set var="path" value="${root}?${params}"/>
+                                <jstl:set var="url" value="/comment/actor/create.do?objectId=${item.id}&path=${path}"/>
+                                <spring:message code="label.new" var="newTitle"/>
+                                <spring:message code="label.comment" var="newCommentTitle"/>
+                                <spring:message code="label.comments" var="comentsTitle"/>
                                 <a><i class="fa fa-commenting-o font-awesome w3-xxlarge w3-padding zoom iButton toRight"
                                       onclick="showConditionalAlert('${msgSaveFirst}','${item.id}','${url}');"
                                       title="${newTitle} ${newCommentTitle}"></i></a>
-                                <a href="comment/actor/list.do?objectId=${showroom.id}">
+                                <a href="comment/actor/list.do?objectId=${item.id}&path=${path}">
                                     <i class="fa fa-comments-o font-awesome w3-xxlarge w3-padding zoom iButton toRight"
                                        title="${comentsTitle}"></i></a>
-                                </div>
-                        </jstl:if>
+                            </jstl:if></div>
                     </div>
+
                 </legend>
             </div>
         </div>

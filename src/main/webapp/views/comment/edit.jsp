@@ -29,11 +29,24 @@
 
 <div class="seccion w3-light-grey" <jstl:if test='${!readonly}'>id="dropbox" ondragover="return false"
      ondrop="myDrop(event)"</jstl:if>>
-    <form:form action="${requestUri}" modelAttribute="comment">
+    <form:form action="${requestUri}" modelAttribute="commentForm">
 
         <form:hidden path="id"/>
         <form:hidden path="version"/>
         <form:hidden path="commentedObjectId"/>
+        <form:hidden path="path"/>
+        <form:hidden path="targetName"/>
+        <div class="row">
+            <div class="col-100" style="padding-bottom: 0px!important;">
+                <a href="" class="iButton" style="padding-bottom: 0px!important;">Acme-Showroom/</a>
+                <a href="${commentForm.path}" class="iButton" style="padding-bottom: 0px!important;">
+                    <jstl:out value="${commentForm.targetName}"/>/</a>
+                <a href="actor/actor/display.do?actorId=${commentForm.actor.id}" class="fa fa-user font-awesome w3-margin-right toRight">
+                    <jstl:out value="${commentForm.actor.userAccount.username}"/>
+                </a>
+                <hr style="margin-top: 0.2em;">
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-50">

@@ -40,12 +40,14 @@
 
         <form:hidden path="id" form="mainForm"/>
         <form:hidden path="version" form="mainForm"/>
+
+
         <div class="row">
             <div class="col-100">
                 <legend><spring:message code="label.chirp"/>
                 </legend>
                 <jstl:if test="${readonly}">
-                    <a href="actor/display.do?actorId=${chirp.actor.id}" class="fa fa-user font-awesome"> <jstl:out value="${chirp.actor.userAccount.username}"/>
+                    <a href="actor/actor/display.do?actorId=${chirp.actor.id}" class="fa fa-user font-awesome"> <jstl:out value="${chirp.actor.userAccount.username}"/>
                     </a>
                     <jstl:if test="${!subscribedToActor}">
                         <spring:message code="label.follow" var="actorTooltip"/>
