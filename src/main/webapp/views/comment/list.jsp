@@ -61,11 +61,14 @@
 	</jstl:if>
 
 	<div style="overflow-x: auto;">
+		<jstl:set var="root" value="${requestScope['javax.servlet.forward.request_uri']}"/>
+		<jstl:set var="params" value="<%= request.getQueryString() %>"/>
+		<jstl:set var="path" value="${root}?${params}"/>
 		<display:table pagesize="${pageSize}"
 			class="flat-table0 flat-table-1 w3-light-grey" name="comments"
 			requestURI="${requestUri}" id="row">
 			<jstl:set var="url"
-				value="comment/actor/display.do?commentId=${row.id}" />
+				value="comment/actor/display.do?commentId=${row.id}&path=${path}" />
 
 			<acme:urlColumn value="${row.actor.userAccount.username}"
 				title="label.user" href="actor/display.do?actorId=${row.actor.id}"

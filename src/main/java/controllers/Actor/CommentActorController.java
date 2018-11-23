@@ -38,12 +38,17 @@ public class CommentActorController extends AbstractController {
     public ModelAndView list(Integer objectId, final Integer pageSize, String path) {
         ModelAndView result;
         final Collection <Comment> comments;
-        comments = this.commentService.findByCommentedObjectId(objectId);
-        Commentable commentedObject = this.commentService.findCommentedObjectByCommentedObjectId(objectId);
-        result = new ModelAndView("comment/list");
+        if(objectId!=null){
+            comments = this.commentService.findByCommentedObjectId(objectId);
+            Commentable commentedObject = this.commentService.findCommentedObjectByCommentedObjectId(objectId);
+            result = new ModelAndView("comment/list");
+            result.addObject("path", path);
+            result.addObject("commented", commentedObject.getObjectName());
+        }else{
+            comments = this.commentService.findAll();
+            result = new ModelAndView("comment/list");
+        }
         result.addObject("comments", comments);
-        result.addObject("path", path);
-        result.addObject("commented", commentedObject.getObjectName());
         result.addObject("requestUri", "comment/actor/list.do");
         result.addObject("pageSize", (pageSize != null) ? pageSize : 5);
         return result;

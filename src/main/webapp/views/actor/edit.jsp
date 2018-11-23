@@ -235,8 +235,7 @@
             <div class="seccion w3-light-grey">
                 <div class="row">
                     <div class="col-50">
-                        <acme:backButton text="label.back" css="formButton toLeft"/>
-                        <security:authorize access="isAuthenticated()">
+                         <security:authorize access="isAuthenticated()">
 
                             <jstl:if test="${!edition}">
                                 <jstl:if test="${!subscribedToActor}">

@@ -24,7 +24,7 @@
 </security:authorize>
 
 <jstl:set var="readonly"
-          value="${comment.id != 0}"/>
+          value="${commentForm.id != 0}"/>
 
 
 <div class="seccion w3-light-grey" <jstl:if test='${!readonly}'>id="dropbox" ondragover="return false"
@@ -51,7 +51,7 @@
         <div class="row">
             <div class="col-50">
                 <label class="toRight">
-                    <fmt:formatDate value="${comment.moment}" type="both" dateStyle="long" timeStyle="short"
+                    <fmt:formatDate value="${commentForm.moment}" type="both" dateStyle="long" timeStyle="short"
                                     var="publicationDate"/>
                     <jstl:out value="${publicationDate}"/></label>
                 <acme:textbox code="label.title" path="title"
@@ -88,7 +88,7 @@
                         <br/>
                         <div id="fotos" style="margin-bottom: 0.2em;">
                             <jstl:set var="count" scope="application" value="${0}"/>
-                            <jstl:forEach items="${comment.pictures}" var="picture">
+                            <jstl:forEach items="${commentForm.pictures}" var="picture">
                                 <jstl:set var="count" scope="application" value="${count + 1}"/>
                                 <img src="${picture}" class="tableImg iButton" onclick="currentSlide(${count})">
                             </jstl:forEach>
@@ -100,7 +100,7 @@
                             <div class="slideshow-container" id="carrusel">
                                 <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
                                 <a class="next" onclick="plusSlides(1)">&#10095;</a>
-                                <jstl:forEach items="${comment.pictures}" var="picture">
+                                <jstl:forEach items="${commentForm.pictures}" var="picture">
                                     <jstl:set var="count" scope="application" value="${count + 1}"/>
                                     <div class="mySlides">
                                         <a href="${picture}"><img src="${picture}"
@@ -114,7 +114,7 @@
                         <br>
                         <jstl:set var="count" scope="application" value="${0}"/>
                         <div style="text-align: center" id="punto">
-                            <jstl:forEach items="${comment.pictures}" var="picture">
+                            <jstl:forEach items="${commentForm.pictures}" var="picture">
                                 <jstl:set var="count" scope="application" value="${count + 1}"/>
                                 <span class="dot" onclick="currentSlide(${count})"></span>
                             </jstl:forEach>
@@ -148,6 +148,6 @@
         $(document).tooltip();
     });
 
-    fillRating(${comment.rating});
+    fillRating(${commentForm.rating});
 
 </script>

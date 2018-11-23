@@ -93,4 +93,8 @@ public class CommentService {
         }
         return comment;
     }
+
+    public Collection<Comment> findAll() {
+        return this.commentRepository.findAll();
+    }
 }
