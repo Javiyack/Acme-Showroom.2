@@ -129,7 +129,7 @@ public class RequestService {
 			this.validator.validate(request, binding);
 		else {
 			CreditCard cd = new domain.CreditCard();
-			cd.setBrandName("Brand Name");
+			cd.setBrandName(CreditCard.MASTERCARD);
 			cd.setHolderName("Holder Name");
 			cd.setCardNumber("1111-2222-3333-4444");
 			cd.setExpirationMonth("12");

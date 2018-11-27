@@ -3,15 +3,15 @@ package forms;
 
 import domain.Actor;
 import domain.Comment;
-import domain.Item;
-import domain.Showroom;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 import utilities.URLCollection;
 
-import javax.persistence.*;
+import javax.persistence.ElementCollection;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;

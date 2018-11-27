@@ -1,14 +1,13 @@
 package utilities;
 
-import java.util.Collection;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
 import org.hibernate.validator.constraints.URL;
 import org.hibernate.validator.internal.constraintvalidators.URLValidator;
 import org.hibernate.validator.internal.util.annotationfactory.AnnotationDescriptor;
 import org.hibernate.validator.internal.util.annotationfactory.AnnotationFactory;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import java.util.Collection;
 
 public class URLCollectionValidator implements ConstraintValidator<URLCollection, Collection<String>> {
 

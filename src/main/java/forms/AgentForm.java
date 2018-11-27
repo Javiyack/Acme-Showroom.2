@@ -1,11 +1,10 @@
 
 package forms;
 
+import domain.Agent;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
-
-import domain.Agent;
 import security.Authority;
 
 public class AgentForm extends ActorForm{

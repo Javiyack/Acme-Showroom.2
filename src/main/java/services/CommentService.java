@@ -1,8 +1,7 @@
 package services;
 
-import java.util.Collection;
-import java.util.Date;
-
+import domain.Actor;
+import domain.Comment;
 import domain.Commentable;
 import forms.CommentForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
-
-import domain.Actor;
-import domain.Comment;
 import repositories.CommentRepository;
+
+import java.util.Collection;
+import java.util.Date;
 
 @Service
 @Transactional

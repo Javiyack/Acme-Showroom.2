@@ -1,16 +1,15 @@
 
 package forms;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
+import domain.Actor;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
-import domain.Actor;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class ActorForm {
 
@@ -49,7 +48,7 @@ public class ActorForm {
 		this.setAddress(actor.getAddress());
 
 		this.setAccount(new AccountForm(actor));
-		this.setAuthority(this.getAccount().getAuthority());
+		this.setAuthority(actor.getUserAccount().getAuthorities().iterator().next().getAuthority());
 		this.setUsername(actor.getUserAccount().getUsername());
 		
 		

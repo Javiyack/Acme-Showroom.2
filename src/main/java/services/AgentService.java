@@ -1,16 +1,15 @@
 package services;
 
-import java.util.Collection;
-
+import domain.Agent;
+import forms.AgentForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
-
-import domain.Agent;
-import forms.AgentForm;
 import repositories.AgentRepository;
+
+import java.util.Collection;
 
 @Service
 @Transactional

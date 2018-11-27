@@ -1,13 +1,11 @@
 
 package services;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
-
+import domain.*;
+import forms.ActorForm;
+import forms.AdminForm;
+import forms.AgentForm;
+import forms.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,20 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
-
-import domain.Actor;
-import domain.Administrator;
-import domain.Agent;
-import domain.Chirp;
-import domain.User;
-import forms.ActorForm;
-import forms.AgentForm;
-import forms.UserForm;
 import repositories.ActorRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import security.UserAccountService;
+
+import java.util.*;
 
 @Service
 @Transactional
@@ -41,6 +32,10 @@ public class ActorService {
     // Supporting services ----------------------------------------------------
     @Autowired
     private UserAccountService userAccountService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AgentService agentService;
 
     @Autowired
     private Validator validator;
@@ -207,6 +202,29 @@ public class ActorService {
         }
         return result;
     }
+
+    public Actor reconstructActor(ActorForm actorForm, BindingResult binding) {
+        Actor actor = null;
+
+        switch (actorForm.getAccount().getAuthority()) {
+            case Authority.ADMINISTRATOR:
+                AdminForm adminForm = (AdminForm) actorForm;
+                actor = this.reconstruct(adminForm, binding);
+                break;
+            case Authority.USER:
+                UserForm userForm = (UserForm) actorForm;
+                actor = userService.reconstruct(userForm, binding);
+                break;
+            case Authority.AGENT:
+                AgentForm agentForm = (AgentForm) actorForm;
+                actor = agentService.reconstruct(agentForm, binding);
+                break;
+            default:
+                break;
+        }
+        return actor;
+    }
+
 
 
     public Actor reconstruct(ActorForm actorForm, BindingResult binding) {

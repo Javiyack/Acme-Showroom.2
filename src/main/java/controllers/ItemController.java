@@ -1,10 +1,8 @@
 
 package controllers;
 
-import java.util.Collection;
-
-import javax.servlet.http.HttpServletRequest;
-
+import domain.Comment;
+import domain.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -12,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import domain.Comment;
-import domain.Item;
 import services.CommentService;
 import services.ItemService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 
 @Controller
 @RequestMapping("/item")

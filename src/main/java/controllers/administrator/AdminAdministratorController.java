@@ -1,6 +1,11 @@
 
 package controllers.administrator;
 
+import controllers.AbstractController;
+import domain.Actor;
+import domain.Administrator;
+import forms.ActorForm;
+import forms.AdminForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -8,12 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import controllers.AbstractController;
-import domain.Actor;
-import domain.Administrator;
-import forms.ActorForm;
-import forms.AdminForm;
 import security.Authority;
 import services.ActorService;
 import services.AdministratorService;

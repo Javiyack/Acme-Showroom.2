@@ -1,10 +1,8 @@
 
 package controllers.administrator;
 
-import java.util.Collection;
-
-import javax.validation.Valid;
-
+import controllers.AbstractController;
+import domain.TabooWord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -12,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import controllers.AbstractController;
-import domain.TabooWord;
 import services.TabooWordService;
+
+import javax.validation.Valid;
+import java.util.Collection;
 
 @Controller
 @RequestMapping("/tabooWord/administrator")

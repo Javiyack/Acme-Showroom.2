@@ -234,7 +234,31 @@
         <property name="description"
                   value="Ropa de primeras marcas a un percio increible con alguna pequeña inperfeccion o tara."/>
         <property name="logo" value="https://www.comparasoftware.com/wp-content/uploads/2018/08/logoTARA.ai_.png"/>
+        <property name="user" ref="user1"/>
+    </bean>
+
+    <bean id="showroom4" class="domain.Showroom">
+        <property name="name" value="Flipas"/>
+        <property name="description"
+                  value="Articulos criosos y sorpendenes"/>
+        <property name="logo" value="https://wallpaperbrowse.com/media/images/An-Irish-Christmas_LOGO.png"/>
         <property name="user" ref="user2"/>
+    </bean>
+
+    <bean id="showroom5" class="domain.Showroom">
+        <property name="name" value="SopaFria"/>
+        <property name="description"
+                  value="Espacialistas en gazpacho andaluz"/>
+        <property name="logo" value="https://wallpaperbrowse.com/media/images/tomatoes_600.jpg"/>
+        <property name="user" ref="user2"/>
+    </bean>
+
+    <bean id="showroom6" class="domain.Showroom">
+        <property name="name" value="Milojas"/>
+        <property name="description"
+                  value="La libreria de tus sueños"/>
+        <property name="logo" value="https://wallpaperbrowse.com/media/images/242851-When-I-Miss-You-I-Re-read-Our-Old-Messages-And-Smile-Like-An-Idiot.....jpg"/>
+        <property name="user" ref="user3"/>
     </bean>
 
     <!-- Items -->
@@ -243,7 +267,7 @@
         <property name="title" value="Gorra Militar"/>
         <property name="description" value="Resistente y duradera."/>
         <property name="available" value="true"/>
-        <property name="price" value="99.99"/>
+        <property name="price" value="29.99"/>
         <property name="SKU" value="720615-XXXX99"/>
         <property name="showroom" ref="showroom1"/>
 
@@ -261,11 +285,11 @@
 
     <bean id="item3" class="domain.Item">
         <property name="title" value="Vaqueros Lee"/>
-        <property name="description" value="Pantalón vaquero como los que ya no se hacen"/>
+        <property name="description" value="Pantalón vaquero de los que ya no se hacen"/>
         <property name="available" value="true"/>
         <property name="price" value="19.99"/>
         <property name="SKU" value="720615-XXXX01"/>
-        <property name="showroom" ref="showroom3"/>
+        <property name="showroom" ref="showroom2"/>
 
     </bean>
 
@@ -275,7 +299,7 @@
         <property name="available" value="true"/>
         <property name="price" value="14.99"/>
         <property name="SKU" value="720615-XXXX09"/>
-        <property name="showroom" ref="showroom1"/>
+        <property name="showroom" ref="showroom2"/>
 
     </bean>
 
@@ -283,9 +307,9 @@
         <property name="title" value="Secador Sahara"/>
         <property name="description" value="Secador de pelo de 15000W de potencias. Podrias cocinar un cordero..."/>
         <property name="available" value="true"/>
-        <property name="price" value="99.99"/>
+        <property name="price" value="28.90"/>
         <property name="SKU" value="720615-YYYY99"/>
-        <property name="showroom" ref="showroom2"/>
+        <property name="showroom" ref="showroom3"/>
 
     </bean>
 
@@ -294,9 +318,79 @@
         <property name="description"
                   value="Todos conocemos la calidad del calzado 'Panama Jack'. Son dos pies izquierdos del 44."/>
         <property name="available" value="true"/>
-        <property name="price" value="99.99"/>
+        <property name="price" value="119.95"/>
         <property name="SKU" value="720615-YYYY99"/>
         <property name="showroom" ref="showroom3"/>
+
+    </bean>
+    <bean id="item7" class="domain.Item">
+        <property name="title" value="Polvo de hadas"/>
+        <property name="description"
+                  value="Todos conocemos el cuento... Campanilla y su genio"/>
+        <property name="available" value="true"/>
+        <property name="price" value="69.69"/>
+        <property name="SKU" value="720615-YYYY99"/>
+        <property name="showroom" ref="showroom4"/>
+
+    </bean>
+    <bean id="item8" class="domain.Item">
+        <property name="title" value="Tomates"/>
+        <property name="description"
+                  value="Espactacular tomate de Cazalla de la Sierra"/>
+        <property name="available" value="true"/>
+        <property name="price" value="2.99"/>
+        <property name="SKU" value="720615-YYYY99"/>
+        <property name="showroom" ref="showroom5"/>
+
+    </bean>
+    <bean id="item9" class="domain.Item">
+        <property name="title" value="Conjuro mortal"/>
+        <property name="description"
+                  value="Sacado de 'El libro de los muertos'"/>
+        <property name="available" value="true"/>
+        <property name="price" value="00.0"/>
+        <property name="SKU" value="720615-YYYY99"/>
+        <property name="showroom" ref="showroom6"/>
+
+    </bean>
+    <bean id="item10" class="domain.Item">
+        <property name="title" value="Coleccion Rambla"/>
+        <property name="description"
+                  value="Los aclamados comics de lod 80"/>
+        <property name="available" value="true"/>
+        <property name="price" value="40.80"/>
+        <property name="SKU" value="720615-YYYY99"/>
+        <property name="showroom" ref="showroom6"/>
+
+    </bean>
+    <bean id="item11" class="domain.Item">
+        <property name="title" value="Java design pattern"/>
+        <property name="description"
+                  value="Profundice en el patron de dineño MVC."/>
+        <property name="available" value="true"/>
+        <property name="price" value="18.99"/>
+        <property name="SKU" value="720615-YYYY99"/>
+        <property name="showroom" ref="showroom6"/>
+
+    </bean>
+    <bean id="item12" class="domain.Item">
+        <property name="title" value="La vida es sueño"/>
+        <property name="description"
+                  value="...y los sueños, sueños son."/>
+        <property name="available" value="true"/>
+        <property name="price" value="24.99"/>
+        <property name="SKU" value="720615-YYYY99"/>
+        <property name="showroom" ref="showroom6"/>
+
+    </bean>
+    <bean id="item13" class="domain.Item">
+        <property name="title" value="Design and Testing All together"/>
+        <property name="description"
+                  value="Aprenda a diseñar y probar aplicaciones web"/>
+        <property name="available" value="true"/>
+        <property name="price" value="14.20"/>
+        <property name="SKU" value="720615-YYYY99"/>
+        <property name="showroom" ref="showroom6"/>
 
     </bean>
 
