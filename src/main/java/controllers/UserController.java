@@ -101,7 +101,7 @@ public class UserController extends AbstractController {
                     && oops.getCause().getCause().getMessage().startsWith("Duplicate"))
                 result = this.createEditModelAndView(userForm, "msg.duplicate.username");
             else
-                result = this.createEditModelAndView(userForm, "user.reconstructActor.error");
+                result = this.createEditModelAndView(userForm, "actor.reconstruct.error");
         }
 
         return result;

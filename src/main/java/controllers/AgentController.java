@@ -110,7 +110,7 @@ public class AgentController extends AbstractController {
 					&& oops.getCause().getCause().getMessage().startsWith("Duplicate"))
 				result = this.createEditModelAndView(agentForm, "msg.duplicate.agentname");
 			else
-				result = this.createEditModelAndView(agentForm, "agent.reconstructActor.error");
+				result = this.createEditModelAndView(agentForm, "actor.reconstruct.error");
 		}
 
 		return result;

@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import domain.Actor;
 import domain.User;
+import org.springframework.util.Assert;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
@@ -265,12 +266,14 @@ public class UseCaseAnonymous extends AbstractTest {
             DataBinder dataBinder = new DataBinder(actorForm);
             BindingResult binding = dataBinder.getBindingResult();
             actor = actorService.reconstructActor(actorForm, binding);
+            Assert.isTrue(!binding.hasErrors());
             actor = this.actorService.save(actor);
             this.actorService.flush();
             super.unauthenticate();
 
         } catch (final Throwable oops) {
             caught = oops.getClass();
+            this.actorService.flush();
         }
         super.checkExceptions((Class<?>) testingDataMap.get("expected"), caught);
     }
