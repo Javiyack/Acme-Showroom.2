@@ -51,9 +51,11 @@ public class UserService {
         User user;
         this.validator.validate(userForm, binding);
         user = (User) actorService.reconstruct(userForm, binding);
-        user.setPhoto(userForm.getPhoto());
-        user.setBirthdate(userForm.getBirthdate());
-        user.setGenere(userForm.getGenere());
+        if(!binding.hasErrors()){
+            user.setPhoto(userForm.getPhoto());
+            user.setBirthdate(userForm.getBirthdate());
+            user.setGenere(userForm.getGenere());
+        }
         return user;
     }
 

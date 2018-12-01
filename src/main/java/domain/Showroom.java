@@ -34,6 +34,7 @@ public class Showroom extends Commentable {
         this.user = user;
     }
 
+    @NotNull
     @NotBlank
     @SafeHtml
     public String getName() {
@@ -46,6 +47,7 @@ public class Showroom extends Commentable {
     }
 
     @SafeHtml(whitelistType = WhiteListType.NONE)
+    @NotNull
     @NotBlank
     public String getDescription() {
         return description;
@@ -57,6 +59,7 @@ public class Showroom extends Commentable {
 
 
     @NotNull
+    @NotBlank
     @URL
     public String getLogo() {
         return logo;

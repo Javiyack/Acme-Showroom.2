@@ -50,9 +50,11 @@ public class CommentService {
     public Comment save(Comment comment) {
         Actor actor = actorService.findByPrincipal();
         Assert.notNull(actor, "msg.not.logged.block");
-        Assert.isTrue(comment.getCommentedObjectId()!=0, "msg.save.first");
-        comment.setMoment(new Date());
-        return commentRepository.save(comment);
+        Assert.isTrue(comment.getCommentedObjectId()!=null && comment.getCommentedObjectId()!=0, "msg.save.first");
+        comment.setMoment(new Date(System.currentTimeMillis()-200));
+        comment = commentRepository.save(comment);
+        this.flush();
+        return comment;
     }
 
     public Comment findOne(int followId) {
@@ -95,5 +97,9 @@ public class CommentService {
 
     public Collection<Comment> findAll() {
         return this.commentRepository.findAll();
+    }
+
+    public void flush() {
+        commentRepository.flush();
     }
 }

@@ -8,7 +8,7 @@
  * http://www.tdg-seville.info/License.html
  */
 
-package usecases;
+package usecases.c4user;
 
 import domain.CreditCard;
 import domain.Request;
@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
+import services.ItemService;
 import services.RequestService;
+import services.ShowroomService;
 import utilities.AbstractTest;
 
 import javax.transaction.Transactional;
@@ -28,17 +30,20 @@ import javax.transaction.Transactional;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class UseCaseRequest extends AbstractTest {
+public class CU21CrateRequest extends AbstractTest {
 
     // System under test ------------------------------------------------------
     @Autowired
     private RequestService requestService;
-    // Tests ------------------------------------------------------------------
+    @Autowired
+    private ShowroomService showroomService;
+    @Autowired
+    private ItemService itemService;
 
-    // The following are fictitious test cases that are intended to check that
-    // JUnit works well in this project.  Just righ-click this class and run
-    // it using JUnit.
 
+    /*
+     * CU21. Solicitar artículo
+     */
     @Test
     public void requestPositiveTest() {
         int itemId;
@@ -55,12 +60,16 @@ public class UseCaseRequest extends AbstractTest {
         creditCard.setCardNumber("1111-2222-3333-4444");
         request.setCreditCard(creditCard);
         request = requestService.save(request);
+        requestService.flush();
         Assert.isTrue(request.getId() != 0);
     }
 
+    /* Users may request items from other users.
+     * CU21. Solicitar artículo
+     */
     @Test(expected = IllegalArgumentException.class)
-    public void requestNegativeTest() {
-
+    public void requestNegativeTest1() {
+        // Negativo. Un usuario no puede solicitar sus propios artículos
         int itemId;
         itemId = super.getEntityId("item5");
         super.authenticate("user1");
@@ -75,6 +84,31 @@ public class UseCaseRequest extends AbstractTest {
         creditCard.setCVV("999");
         request.setCreditCard(creditCard);
         request = requestService.save(request);
+        requestService.flush();
+        Assert.isTrue(request.getId() != 0);
+    }
+
+    /* Users may request items from other users.
+     * CU21. Solicitar artículo
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void requestNegativeTest2() {
+        // Negativo. Ha de ser de tipo USUARIO para realizar solicitudes
+        int itemId;
+        itemId = super.getEntityId("item5");
+        super.authenticate("admin");
+        Request request = requestService.create(itemId);
+        request.setStatus(Request.PENDING);
+        CreditCard creditCard = new CreditCard();
+        creditCard.setHolderName("Holder Name");
+        creditCard.setBrandName(CreditCard.MASTERCARD);
+        creditCard.setCardNumber("1111-2222-3333-4444");
+        creditCard.setExpirationMonth("12");
+        creditCard.setExpirationYear("99");
+        creditCard.setCVV("999");
+        request.setCreditCard(creditCard);
+        request = requestService.save(request);
+        requestService.flush();
         Assert.isTrue(request.getId() != 0);
     }
 
@@ -117,7 +151,7 @@ public class UseCaseRequest extends AbstractTest {
         try {
             int itemId;
             itemId = super.getEntityId((String) testingData[0]);
-            super.authenticate((String)testingData[1]);
+            super.authenticate((String) testingData[1]);
             Request request = requestService.create(itemId);
             request.setStatus((String) testingData[2]);
             CreditCard creditCard = new CreditCard();
@@ -129,6 +163,7 @@ public class UseCaseRequest extends AbstractTest {
             creditCard.setCVV((String) testingData[8]);
             request.setCreditCard(creditCard);
             request = requestService.save(request);
+            requestService.flush();
             Assert.isTrue(request.getId() != 0);
         } catch (final Throwable oops) {
             caught = oops.getClass();

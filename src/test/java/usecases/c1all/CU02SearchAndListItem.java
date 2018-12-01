@@ -1,5 +1,5 @@
 
-package usecases;
+package usecases.c1all;
 
 import domain.Item;
 import domain.Showroom;
@@ -25,12 +25,7 @@ import java.util.Map;
         "classpath:spring/junit.xml"
 })
 @Transactional
-public class SearchAndListItem extends AbstractTest {
-    /*
-     * Caso de uso 03: Search for items using a single keyword that must appear in its SKU, title, or description.
-     * Given an item, he or she must be able to navigate to the corresponding showroom,
-     * to the corresponding user, and so on.
-     */
+public class CU02SearchAndListItem extends AbstractTest {
 
     @Autowired
     private ActorService actorService;
@@ -40,17 +35,37 @@ public class SearchAndListItem extends AbstractTest {
     private ShowroomService showroomService;
     private Map <String, Object> testingDataMap;
 
+    /* Casos de uso 2, 3, 4 y 8
+     * Search for showrooms using a single keyword that must appear in its title or its de
+     * scription. Given a showroom, he or she must be able to navigate to the corresponding items,
+     * to the profile of the corresponding user, and so on.
+     *
+     * CU2. Buscar y listar artículos
+     * Este test realiza busqueda de distintos terminos y comprueba los errores esperados.
+     * Carga los datos en 'testingDataMap' y luego llama a la plantilla 'templateSearchShowroomTest'
+     */
+    @Test
+    public void searItemTest() throws ParseException {
+
+        Object userData[][] = (Object[][]) getTestingData();
+        for (int i = 0; i < userData.length; i++) {
+            testingDataMap = new HashMap <String, Object>();
+            testingDataMap.put("word", userData[i][0]);
+            testingDataMap.put("expected", userData[i][1]);
+            this.templateSearchItemTest();
+        }
+    }
 
     /*
      * Este test pretende comprobar que el sistema lista todos los artículos correctamente
      */
     @Test
-    public void searchAll() throws ParseException {
+    public void searchAllItems() throws ParseException {
         Collection <Item> result = itemService.findAll();
         Integer count = result.size();
         super.authenticate("user1");
         Collection <Showroom> showrooms = showroomService.findByLogedActor();
-        if(!showrooms.isEmpty()){
+        if (!showrooms.isEmpty()) {
             Showroom showroom = showrooms.iterator().next();
             Item item = itemService.create(showroom);
             item.setTitle("Lalalá");
@@ -69,23 +84,6 @@ public class SearchAndListItem extends AbstractTest {
         }
     }
 
-
-    /*
-     * Este test realiza busqueda de distintos terminos y comprueba los errores esperados.
-     * Carga los datos en 'testingDataMap' y luego llama a la plantilla 'templateSearchItemTest'
-     */
-    @Test
-    public void searItemTest() throws ParseException {
-
-        Object userData[][] = (Object[][]) getTestingData();
-        for (int i = 0; i < userData.length; i++) {
-            testingDataMap = new HashMap <String, Object>();
-            testingDataMap.put("word", userData[i][0]);
-            testingDataMap.put("expected", userData[i][1]);
-            this.templateSearchItemTest();
-        }
-    }
-
     protected void templateSearchItemTest() {
         Class <?> caught;
         /*
@@ -100,9 +98,9 @@ public class SearchAndListItem extends AbstractTest {
             Collection <Item> all = itemService.findAll();
             Collection <Item> matches = itemService.findAll();
             for (Item item : all) {
-                if(!item.getTitle().toLowerCase().contains(word.toLowerCase())
+                if (!item.getTitle().toLowerCase().contains(word.toLowerCase())
                         && !item.getDescription().toLowerCase().contains(word.toLowerCase())
-                        && !item.getSKU().toLowerCase().contains(word.toLowerCase())){
+                        && !item.getSKU().toLowerCase().contains(word.toLowerCase())) {
                     matches.remove(item);
                 }
             }
@@ -112,7 +110,7 @@ public class SearchAndListItem extends AbstractTest {
                         || item.getDescription().toLowerCase().contains(word.toLowerCase())
                         || item.getSKU().toLowerCase().contains(word.toLowerCase()));
             }
-            Assert.isTrue(matches.size()==result.size());
+            Assert.isTrue(matches.size() == result.size());
             for (Item item : result) {
                 Assert.isTrue(matches.contains(item));
             }
@@ -122,7 +120,6 @@ public class SearchAndListItem extends AbstractTest {
         }
         super.checkExceptions((Class <?>) testingDataMap.get("expected"), caught);
     }
-
 
     protected Object getTestingData() {
         final Object testingData[][] = {
@@ -134,5 +131,6 @@ public class SearchAndListItem extends AbstractTest {
         };
         return testingData;
     }
+
 
 }

@@ -95,5 +95,7 @@ public class ChirpService {
     }
 
 
-
+    public void flush() {
+        chirpRepository.flush();
+    }
 }

@@ -10,6 +10,7 @@ import utilities.URLCollection;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import java.util.Collection;
 import java.util.Date;
 
@@ -25,9 +26,9 @@ public class Comment extends DomainEntity {
     private Collection<String> pictures;
     // Relationships
     private Actor actor;
-    private int commentedObjectId;
+    private Integer commentedObjectId;
 
-
+    @Past
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     public Date getMoment() {
@@ -38,6 +39,7 @@ public class Comment extends DomainEntity {
         this.moment = moment;
     }
 
+    @NotNull
     @NotBlank
     @SafeHtml
     public String getText() {
@@ -48,6 +50,7 @@ public class Comment extends DomainEntity {
         this.text = body;
     }
 
+    @NotNull
     @NotBlank
     @SafeHtml
     public String getTitle() {
@@ -60,11 +63,11 @@ public class Comment extends DomainEntity {
 
 
     @NotNull
-    public int getCommentedObjectId() {
+    public Integer getCommentedObjectId() {
         return this.commentedObjectId;
     }
 
-    public void setCommentedObjectId(final int commentedObjectId) {
+    public void setCommentedObjectId(final Integer commentedObjectId) {
         this.commentedObjectId = commentedObjectId;
     }
 

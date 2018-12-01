@@ -69,6 +69,7 @@ public class RequestService {
 				result.getItem().setAvailable(false);
 				itemService.save(result.getItem());
 			}
+			this.flush();
 			return result;
 
 		}
@@ -148,5 +149,9 @@ public class RequestService {
 	public Collection<Request> findByItemId(int id) {
 
 		return this.requestRepository.findByItemId(id);
+	}
+
+	public void flush() {
+		requestRepository.flush();
 	}
 }

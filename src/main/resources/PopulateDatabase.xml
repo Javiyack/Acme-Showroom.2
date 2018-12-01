@@ -76,7 +76,7 @@
 
     <!-- Administrators Actors -->
 
-    <bean id="administrator1" class="domain.Administrator">
+    <bean id="admin" class="domain.Administrator">
         <property name="name" value="Javier"/>
         <property name="surname" value="Llach"/>
         <property name="email" value="javillach@gmail.com"/>

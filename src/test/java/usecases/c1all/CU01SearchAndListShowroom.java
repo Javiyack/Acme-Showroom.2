@@ -1,5 +1,5 @@
 
-package usecases;
+package usecases.c1all;
 
 import domain.Showroom;
 import org.junit.Test;
@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import services.ActorService;
+import services.ItemService;
 import services.ShowroomService;
 import utilities.AbstractTest;
 
@@ -23,24 +24,58 @@ import java.util.Map;
         "classpath:spring/junit.xml"
 })
 @Transactional
-public class SearchAndListShowroom extends AbstractTest {
+public class CU01SearchAndListShowroom extends AbstractTest {
 
-    /*
-     * Caso de uso 2: Search for showrooms using a single keyword that must appear in its title or its de
-     * scription. Given a showroom, he or she must be able to navigate to the corresponding items,
-     * to the profile of the corresponding user, and so on.
-     */
     @Autowired
     private ActorService actorService;
+    @Autowired
+    private ItemService itemService;
     @Autowired
     private ShowroomService showroomService;
     private Map <String, Object> testingDataMap;
 
+
+    /* Casos de uso 1, 3, 4 y 8
+     * Search for items using a single keyword that must appear in its SKU, title, or description.
+     * Given an item, he or she must be able to navigate to the corresponding showroom,
+     * to the corresponding user, and so on.
+     */
+
+    /*
+     * CU1. Buscar y listar escaparates
+     * Este test realiza busqueda de distintos terminos y comprueba los errores esperados.
+     * Carga los datos en 'testingDataMap' y luego llama a la plantilla 'templateSearchItemTest'
+     */
+
+    @Test
+    public void searShowroomTest() throws ParseException {
+
+        Object userData[][] = (Object[][]) getTestingData();
+        for (int i = 0; i < userData.length; i++) {
+            testingDataMap = new HashMap <String, Object>();
+            testingDataMap.put("word", userData[i][0]);
+            testingDataMap.put("expected", userData[i][1]);
+            this.templateSearchShowroomTest();
+        }
+    }
+
+
+
+    protected Object getTestingData() {
+        final Object testingData[][] = {
+                {"", null},
+                {"todo", null},
+                {"escap", null},
+                {"¿?..%&@...#¡!(..)", null},
+                {null, NullPointerException.class}
+        };
+        return testingData;
+    }
     /*
      * Este test pretende comprobar que el sistema lista todos los escaparates correctamente
      */
     @Test
-    public void searchAll() throws ParseException {
+    public void searchAllShowrooms() throws ParseException {
         Collection <Showroom> result = showroomService.findAll();
         Integer count = result.size();
         super.authenticate("user1");
@@ -57,21 +92,6 @@ public class SearchAndListShowroom extends AbstractTest {
         Assert.isTrue(result.size() == count - 1);
     }
 
-    /*
-     * Este test realiza busqueda de distintos terminos y comprueba los errores esperados.
-     * Carga los datos en 'testingDataMap' y luego llama a la plantilla 'templateSearchShowroomTest'
-     */
-    @Test
-    public void searShowroomTest() throws ParseException {
-
-        Object userData[][] = (Object[][]) getTestingData();
-        for (int i = 0; i < userData.length; i++) {
-            testingDataMap = new HashMap <String, Object>();
-            testingDataMap.put("word", userData[i][0]);
-            testingDataMap.put("expected", userData[i][1]);
-            this.templateSearchShowroomTest();
-        }
-    }
 
     protected void templateSearchShowroomTest() {
         Class <?> caught;
@@ -108,16 +128,5 @@ public class SearchAndListShowroom extends AbstractTest {
         super.checkExceptions((Class <?>) testingDataMap.get("expected"), caught);
     }
 
-
-    protected Object getTestingData() {
-        final Object testingData[][] = {
-                {"", null},
-                {"todo", null},
-                {"escap", null},
-                {"¿?..%&@...#¡!(..)", null},
-                {null, NullPointerException.class}
-        };
-        return testingData;
-    }
 
 }

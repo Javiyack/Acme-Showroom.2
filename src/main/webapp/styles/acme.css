@@ -836,18 +836,21 @@ to {
 
 
 .iconoenlace {
-	width: 36px;
+	min-width: 2em !important;
+	max-width: 2em !important;
 }
 
 @media screen and (max-width: 1399px) {
     .iconoenlace {
-        width: 36px;
+		min-width: 2em !important;
+		max-width: 2em !important;
     }
 }
 
 @media screen and (min-width: 1400px) {
     .iconoenlace {
-        width: 36px;
+		min-width: 2em !important;
+		max-width: 2em !important;
     }
 }
 

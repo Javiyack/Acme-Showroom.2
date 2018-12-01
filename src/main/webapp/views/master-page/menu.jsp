@@ -33,19 +33,22 @@
     <div class="w3-container w3-row">
         <div class="w3-col s4">
             <security:authorize access="isAuthenticated()">
+                <spring:message code="label.logout" var="tooltip"/>
                 <a href="j_spring_security_logout" class=""><i
-                        class="fa fa-sign-out w3-margin w3-xxlarge"></i></a>
+                        class="fa fa-sign-out w3-margin w3-xxlarge iButton zoom" title="${tooltip}"></i></a>
             </security:authorize>
             <security:authorize access="isAnonymous()">
+                <spring:message code="label.login" var="tooltip"/>
                 <a href="security/login.do" class=""><i
-                        class="fa fa-sign-in w3-margin w3-xxlarge"></i></a>
+                        class="fa fa-sign-in w3-margin w3-xxlarge iButton zoom" title="${tooltip}"></i></a>
             </security:authorize>
         </div>
         <div class="w3-col s8 w3-bar">
             <span> <spring:message code="welcome.greeting.msg"/>${colom}<strong>${username}</strong></span><br>
             <security:authorize access="isAnonymous()">
                 <!-- Trigger/Open The Modal -->
-                <a id="myBtn" name="menuItem"><i class="fa fa-user-plus w3-bar-item w3-xlarge"></i></a>
+                <spring:message code="msg.register.to.system" var="tooltip"/>
+                <a id="myBtn" name="menuItem"><i class="fa fa-user-plus w3-bar-item w3-xlarge iButton zoom" title="${tooltip}"></i></a>
                 <!-- The Modal -->
                 <div id="myModal" class="modal">
                     <!-- Modal content -->
@@ -79,8 +82,9 @@
                 </div>
             </security:authorize>
             <security:authorize access="isAuthenticated()">
+                <spring:message code="label.editProfile" var="tooltip"/>
                 <a href="${rol}/edit.do" name="menuItem"><i
-                        class="fa fa-user w3-bar-item w3-xlarge"></i></a>
+                        class="fa fa-user w3-bar-item w3-xlarge iButton zoom" title="${tooltip}"></i></a>
             </security:authorize>
         </div>
     </div>
@@ -93,7 +97,7 @@
                 code="label.showrooms"/>
         </a>
         <a href="item/list.do" name="menuItem"
-           class="w3-bar-item w3-button w3-padding w3-xlarge"id="items"> <i
+           class="w3-bar-item w3-button w3-padding w3-xlarge" id="items"> <i
                 class="fa fa-diamond fa-fw w3-margin-right"></i> <spring:message
                 code="label.items"/>
         </a>
@@ -108,7 +112,8 @@
                     class="fa fa-heart-o fa-fw w3-margin-right"></i> <spring:message
                     code="label.subscriptions"/>
             </a>
-            <a id="chirps" class="w3-bar-item w3-button w3-padding w3-xlarge" onclick="myAccordionFunc('chirpsAcc')" name="menuItem">
+            <a id="chirps" class="w3-bar-item w3-button w3-padding w3-xlarge" onclick="myAccordionFunc('chirpsAcc')"
+               name="menuItem">
                 <i class="fa fa-bell-o fa-fw w3-margin-right"></i> <spring:message code="label.chirps"/>
             </a>
             <div id="chirpsAcc" class="w3-hide w3-card sombra" name="accordion">
@@ -126,7 +131,8 @@
         </security:authorize>
 
         <security:authorize access="hasRole('USER')">
-            <a id="requests" class="w3-bar-item w3-button w3-padding w3-xlarge" onclick="myAccordionFunc('requestsAcc')" name="menuItem">
+            <a id="requests" class="w3-bar-item w3-button w3-padding w3-xlarge" onclick="myAccordionFunc('requestsAcc')"
+               name="menuItem">
                 <i class="fa fa fa-bank fa-fw w3-margin-right"></i> <spring:message code="label.requests"/>
             </a>
             <div id="requestsAcc" class="w3-hide w3-card sombra" name="accordion">

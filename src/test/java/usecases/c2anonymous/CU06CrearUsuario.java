@@ -1,5 +1,5 @@
 
-package usecases;
+package usecases.c2anonymous;
 
 import domain.Actor;
 import domain.User;
@@ -14,11 +14,14 @@ import security.Authority;
 import security.UserAccount;
 import security.UserAccountService;
 import services.ActorService;
+import services.AgentService;
+import services.UserService;
 import utilities.AbstractTest;
 
 import javax.validation.ConstraintViolationException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -28,23 +31,30 @@ import java.util.Map;
 	"classpath:spring/junit.xml"
 })
 @Transactional
-public class UseCaseChirps extends AbstractTest {
+public class CU06CrearUsuario extends AbstractTest {
 
 	@Autowired
-	private ActorService		actorService;
-	@Autowired
+    private ActorService		actorService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AgentService agentService;
+    @Autowired
 	private UserAccountService	userAccountService;
 	private Map<String, Object> testingDataMap;
 
-    /*
-     * Caso de uso:
-     * No autenticado -> Registro como usuario (CU01)
+    /* Edit his or her user account data.
+     * CU20. Crear usuario
      */
     @Test
     public void createUserTest() throws ParseException {
+        /*
+         * Aquí cargamos  los datos a probar y el error esperado en 'testingDataMap'
+         * y llamamos a la plantilla 'templateCreateUserTest'
+         */
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        Object userData[][]=(Object[][]) getTestingData();
+        Object userData[][]=(Object[][]) getCreationTestingData();
         for (int i = 0; i < userData.length; i++) {
             testingDataMap = new HashMap<String, Object>();
             testingDataMap.put("name", userData[i][0]);
@@ -61,7 +71,7 @@ public class UseCaseChirps extends AbstractTest {
             this.templateCreateUserTest();
         }
     }
-    protected Object getTestingData() {
+    protected Object getCreationTestingData() {
         final Object testingData[][] = {
                 {// Positive
                         "Username1", "Dominguez Lopez",
@@ -112,8 +122,8 @@ public class UseCaseChirps extends AbstractTest {
                 , {// Negative: with duplicate username
                 "Username7", "Surname Test",
                 "652956526", "emailTest@email.com", "Address Test",
-                "21-04-1992", "UNDEFINED", "http:/photo.com",
-                "Username7", "Password4",
+                "21-04-1992", "UNDEFINED", "http://photo.com",
+                "user1", "Password4",
                 DataIntegrityViolationException.class
         }
         };
@@ -121,7 +131,10 @@ public class UseCaseChirps extends AbstractTest {
     }
     protected void templateCreateUserTest() {
         Class<?> caught;
-
+        /*
+            Simulamos la creación de usuario con los datos cargados en 'testingDataMap'
+            y luego comprobamos el error esperado
+        */
         caught = null;
         try {
             final User user = new User();
@@ -130,7 +143,7 @@ public class UseCaseChirps extends AbstractTest {
             user.setSurname((String) testingDataMap.get("surname") );
             user.setPhone((String) testingDataMap.get("phone") );
             user.setEmail((String) testingDataMap.get("email") );
-            user.setBirthdate((java.util.Date)  testingDataMap.get("bithdate") );;
+            user.setBirthdate((Date)  testingDataMap.get("bithdate") );;
             user.setGenere((String)  testingDataMap.get("genere"));
             user.setAddress((String)  testingDataMap.get("address"));
             user.setPhoto(((String)  testingDataMap.get("photo")));
@@ -139,7 +152,6 @@ public class UseCaseChirps extends AbstractTest {
             user.setUserAccount(userAccount);
             user.setFollows(new HashSet<Actor>());
             user.setTopics(new HashSet<String>());
-
             this.actorService.save(user);
             this.actorService.flush();
 
@@ -148,5 +160,6 @@ public class UseCaseChirps extends AbstractTest {
         }
         super.checkExceptions((Class<?>) testingDataMap.get("expected"), caught);
     }
+
 
 }

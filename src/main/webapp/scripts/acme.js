@@ -1,4 +1,8 @@
 $(document).ready(function () {
+
+    $(function () {
+        $(document).tooltip();
+    });
     markOpenLink();
     // Get the Sidebar
     var mySidebar = document.getElementById("mySidebar");

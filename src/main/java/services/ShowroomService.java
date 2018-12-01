@@ -85,7 +85,7 @@ public class ShowroomService {
 
     public void delete(Showroom showroom) {
         Assert.notNull(showroom, "msg.not.found.resource");
-        Assert.notNull(showroom.getUser().equals(actorService.findByPrincipal()), "msg.not.owned.block");
+        Assert.isTrue(showroom.getUser().equals(actorService.findByPrincipal()), "msg.not.owned.block");
         Collection<Item> Items = itemRepository.findByShowroomId(showroom.getId());
         for (Item item:Items) {
             itemRepository.delete(item);

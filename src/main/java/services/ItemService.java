@@ -117,6 +117,7 @@ public class ItemService {
         Assert.isTrue(actor instanceof User, "msg.not.owned.block");
         Assert.isTrue(!hasRequests(itemId), "msg.item.has.requests.block");
         itemRepository.delete(itemId);
+        this.flush();
     }
     public boolean hasRequests(Integer itemId){
         Collection<Request> requests = requestService.findByItemId(itemId);
