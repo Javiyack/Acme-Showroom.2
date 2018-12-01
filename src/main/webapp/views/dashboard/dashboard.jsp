@@ -64,15 +64,7 @@
                 </div>
             </div>
         </jstl:forEach>
-        <%
-            String select[] = request.getParameterValues("habits");
-            if (select != null && select.length != 0) {
-                out.println("You have selected: ");
-                for (int i = 0; i < select.length; i++) {
-                    out.println(select[i]);
-                }
-            }
-        %>
+
     </div>
 
 </div>
