@@ -34,14 +34,14 @@ public class ItemService {
         Actor actor = actorService.findByPrincipal();
         Assert.notNull(actor, "msg.not.logged.block");
         Assert.isTrue(actor instanceof User, "msg.not.owned.block");
-        Item result= new Item();
+        Item result = new Item();
         result.setShowroom(showroom);
         result.setSKU(this.generateSKU());
         return result;
     }
 
-    private String generateSKU() {
-        String result ="";
+    public String generateSKU() {
+        String result = "";
         Calendar calendar = Calendar.getInstance();
         result += (("" + calendar.get(Calendar.YEAR) % 100).length() == 2) ? calendar.get(Calendar.YEAR) % 100
                 : "0" + calendar.get(Calendar.YEAR) % 100;
@@ -62,15 +62,20 @@ public class ItemService {
     }
 
     // Save
-    public Item save( Item item) {
+    public Item save(Item item) {
         Assert.notNull(item, "msg.not.found.resource");
         Actor actor = actorService.findByPrincipal();
         Assert.notNull(actor, "msg.not.logged.block");
         Assert.isTrue(actor instanceof User, "msg.not.owned.block");
         Assert.isTrue(item.getShowroom().getUser().equals(actor), "msg.not.owned.block");
         Item bdItem = itemRepository.findOne(item.getId());
-        if(item.getId()!=0){
+        if (item.getId() != 0) {
             item.setSKU(bdItem.getSKU());
+            Collection <Request> requests = requestService.findByItemId(item.getId());
+            for (Request request : requests) {
+                if (item.getAvailable())
+                    Assert.isTrue(request.getStatus().equals(Request.REJECTED), "msg.item.has.requests.block");
+            }
         }
         Item result = itemRepository.saveAndFlush(item);
         return result;
@@ -80,23 +85,23 @@ public class ItemService {
         return itemRepository.findOne(id);
     }
 
-    public Collection<Item> findAll() {
-        Collection<Item> items =  itemRepository.findAll();
+    public Collection <Item> findAll() {
+        Collection <Item> items = itemRepository.findAll();
         return items;
     }
 
-    public Collection<Item> findByLogedActor() {
+    public Collection <Item> findByLogedActor() {
         Actor actor;
         actor = this.actorService.findByPrincipal();
         Assert.notNull(actor, "msg.not.logged.block");
         return itemRepository.findByUserId((actor.getId()));
     }
 
-    public Collection<Item> findByUserId(int id) {
+    public Collection <Item> findByUserId(int id) {
         return itemRepository.findByUserId(id);
     }
 
-    public Collection<Item> findByKeyWord(String keyWord) {
+    public Collection <Item> findByKeyWord(String keyWord) {
         return itemRepository.findByKeyWord(keyWord);
     }
 
@@ -119,21 +124,24 @@ public class ItemService {
         itemRepository.delete(itemId);
         this.flush();
     }
-    public boolean hasRequests(Integer itemId){
-        Collection<Request> requests = requestService.findByItemId(itemId);
+
+    public boolean hasRequests(Integer itemId) {
+        Collection <Request> requests = requestService.findByItemId(itemId);
         return !requests.isEmpty();
     }
-    public Collection<Item> findByShowroom(Showroom showroom) {
+
+    public Collection <Item> findByShowroom(Showroom showroom) {
         return this.findByShowroomId(showroom.getId());
     }
-    public Collection<Item> findByShowroomId(Integer showroomId) {
+
+    public Collection <Item> findByShowroomId(Integer showroomId) {
 
         return itemRepository.findByShowroomId(showroomId);
     }
 
-    public Collection<Item> findByKeyWordAndShowroom(String word, Integer showroomId) {
+    public Collection <Item> findByKeyWordAndShowroom(String word, Integer showroomId) {
 
-        return itemRepository.findByKeyWordAndShowroom(word, showroomId );
+        return itemRepository.findByKeyWordAndShowroom(word, showroomId);
     }
 
     public Collection <Item> findByKeyWordAndLogedActor(String word) {

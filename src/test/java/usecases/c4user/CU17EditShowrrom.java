@@ -154,16 +154,4 @@ public class CU17EditShowrrom extends AbstractTest {
         return showroomToEdit;
     }
 
-    private Map <String, Object> getRandomWrongData() {
-        Map <String, Object> result = null;
-        Object[][] data = {{}, {}, {}};
-        return result;
-    }
-
-
-    private Map <String, Object> getRandomValidData() {
-        return null;
-    }
-
-
 }

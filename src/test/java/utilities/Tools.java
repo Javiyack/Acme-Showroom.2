@@ -58,18 +58,30 @@ public class Tools {
         return res;
     }
 
-    public static String getPastDate() {
-        String res;
-        res = "AAAA-2222-333-4444";
+    public static Date getPastDate() {
+        Calendar calendar = Calendar.getInstance();
+        Integer edadMinima = 0;
+        Integer edadTope = getTope(100);
+        calendar.add(Calendar.YEAR, -BasicosAleatorios.getNumeroAleatorio(edadMinima, edadTope));
+        calendar.add(Calendar.MONTH, -BasicosAleatorios.getNumeroAleatorio(12));
+        calendar.add(Calendar.DATE, -BasicosAleatorios.getNumeroAleatorio(31));
 
-        return res;
+        return calendar.getTime();
     }
 
-
-    public static Date getFechaNacimientoMayorDeEdadAleatorio() {
+    public static Date getFutureDate() {
         Calendar calendar = Calendar.getInstance();
-        Integer edadMinima = 18;
-        Integer edadTope = BasicosAleatorios.getNumeroAleatorio(100);
+        Integer edadMinima = 0;
+        Integer edadTope = getTope(100);
+        calendar.add(Calendar.YEAR, +BasicosAleatorios.getNumeroAleatorio(edadMinima, edadTope));
+        calendar.add(Calendar.MONTH, +BasicosAleatorios.getNumeroAleatorio(12));
+        calendar.add(Calendar.DATE, +BasicosAleatorios.getNumeroAleatorio(31));
+
+        return calendar.getTime();
+    }
+
+    private static Integer getTope(int tope){
+        Integer edadTope = BasicosAleatorios.getNumeroAleatorio(tope);
         if (edadTope < 5)
             edadTope = 120;
         else if (edadTope < 35)
@@ -78,6 +90,14 @@ public class Tools {
             edadTope = 50;
         else if (edadTope < 100)
             edadTope = 35;
+        return edadTope;
+    }
+
+
+    public static Date getFechaNacimientoMayorDeEdadAleatorio() {
+        Calendar calendar = Calendar.getInstance();
+        Integer edadMinima = 18;
+        Integer edadTope = getTope(100);
         calendar.add(Calendar.YEAR, -BasicosAleatorios.getNumeroAleatorio(edadMinima, edadTope));
         calendar.add(Calendar.MONTH, -BasicosAleatorios.getNumeroAleatorio(12));
         calendar.add(Calendar.DATE, -BasicosAleatorios.getNumeroAleatorio(31));
@@ -217,7 +237,7 @@ public class Tools {
 
     public static String generateDescription(){
         String result = "";
-        for (int i = 0; i < BasicosAleatorios.getNumeroAleatorio(40, 150); i++) {
+        for (int i = 0; i < BasicosAleatorios.getNumeroAleatorio(20, 40); i++) {
             result += generateBussinesName().toLowerCase();
             result += " ";
         }

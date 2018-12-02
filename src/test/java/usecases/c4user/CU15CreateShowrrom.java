@@ -23,6 +23,7 @@ import services.ShowroomService;
 import utilities.AbstractTest;
 
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolationException;
 import java.util.Collection;
 
 @ContextConfiguration(locations = {
@@ -47,14 +48,51 @@ public class CU15CreateShowrrom extends AbstractTest {
     private ItemService itemService;
 
     /*
-     * CU6. Crear escaparate
+     * CU15. Crear escaparate
      *
      * */
     @Test
     public void createShowroomPositiveTest() {
         super.authenticate("user3");
         Showroom showroom = showroomService.create();
+        showroom.setName("Showroom Name");
+        showroom.setDescription("Ten siempre presente este ecaparate");
+        showroom.setLogo("http://www.qwerty.jpg");
+        showroom = showroomService.save(showroom);
+        showroomService.flush();
+        Collection<Showroom> result = showroomService.findAll();
+        Assert.isTrue(result.size() >0);
+        Assert.isTrue(result.contains(showroom));
+    }
+
+
+    /*
+     * CU15. Crear escaparate. egative, Bad logo url
+     *
+     * */
+    @Test(expected = ConstraintViolationException.class)
+    public void createShowroomNegativeTest1() {
+        super.authenticate("user3");
+        Showroom showroom = showroomService.create();
         showroom.setName("Lalalá");
+        showroom.setDescription("Todo sobre eurovisión");
+        showroom.setLogo("htt:/ww.qwerty.jpg");
+        showroom = showroomService.save(showroom);
+        showroomService.flush();
+        Collection<Showroom> result = showroomService.findAll();
+        Assert.isTrue(result.size() >0);
+        Assert.isTrue(result.contains(showroom));
+    }
+
+    /*
+     * CU15. Crear escaparate. egative, Blank name
+     *
+     * */
+    @Test(expected = ConstraintViolationException.class)
+    public void createShowroomNegativeTest2() {
+        super.authenticate("user3");
+        Showroom showroom = showroomService.create();
+        showroom.setName("");
         showroom.setDescription("Todo sobre eurovisión");
         showroom.setLogo("http://www.qwerty.jpg");
         showroom = showroomService.save(showroom);

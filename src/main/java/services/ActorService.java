@@ -35,6 +35,8 @@ public class ActorService {
     @Autowired
     private UserService userService;
     @Autowired
+    private AdministratorService administratorService;
+    @Autowired
     private AgentService agentService;
 
     @Autowired
@@ -148,6 +150,7 @@ public class ActorService {
     }
 
     public void subscribe(String topic) {
+        Assert.notNull(topic, "msg.bag.request");
         final Actor actor = this.findByPrincipal();
         Assert.notNull(actor, "msg.not.logged.block");
         topic=topic.trim();
@@ -158,6 +161,7 @@ public class ActorService {
     }
 
     public void unSubscribe(String topic) {
+        Assert.notNull(topic, "msg.bag.request");
         final Actor actor = this.findByPrincipal();
         Assert.notNull(actor, "msg.not.logged.block");
         actor.getTopics().remove(topic);
@@ -209,7 +213,7 @@ public class ActorService {
         switch (actorForm.getAccount().getAuthority()) {
             case Authority.ADMINISTRATOR:
                 AdminForm adminForm = (AdminForm) actorForm;
-                actor = this.reconstruct(adminForm, binding);
+                actor = administratorService.reconstruct(adminForm, binding);
                 break;
             case Authority.USER:
                 UserForm userForm = (UserForm) actorForm;

@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.URL;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -37,6 +38,7 @@ public class Showroom extends Commentable {
     @NotNull
     @NotBlank
     @SafeHtml
+    @Size(min = 2, max = 32)
     public String getName() {
         return this.name;
     }
@@ -49,6 +51,7 @@ public class Showroom extends Commentable {
     @SafeHtml(whitelistType = WhiteListType.NONE)
     @NotNull
     @NotBlank
+    @Size(min = 2, max = 255)
     public String getDescription() {
         return description;
     }

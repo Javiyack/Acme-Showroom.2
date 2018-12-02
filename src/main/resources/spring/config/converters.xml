@@ -25,7 +25,6 @@
 		<bean class="converters.UserAccountToString" />
 		<bean class="converters.UserToStringConverter" />
 		<bean class="converters.ConfigurationToStringConverter" />
-		<bean class="converters.TabooWordToStringConverter" />
 		<bean class="converters.ShowroomToStringConverter" />
 		<bean class="converters.ItemToStringConverter" />
 		<bean class="converters.CommentToStringConverter" />
@@ -37,7 +36,6 @@
 		<bean class="converters.StringToUserAccount" />
 		<bean class="converters.StringToUserConverter" />
 		<bean class="converters.StringToConfigurationConverter" />
-		<bean class="converters.StringToTabooWordConverter" />
 		<bean class="converters.StringToShowroomConverter" />
 		<bean class="converters.StringToItemConverter" />
 		<bean class="converters.StringToChirpConverter" />

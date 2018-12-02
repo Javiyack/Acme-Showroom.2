@@ -150,7 +150,7 @@ public class ActorForm {
 		this.email = email;
 	}
 
-	@Pattern(regexp = "^[0-9+() ]{0,9}.{4,32}$")
+	@Pattern(regexp = "^[0-9+() ]{0,9}\\d{4,32}$")
 	@NotBlank
 	@Size(min = 4,max = 41)
 	public String getPhone() {

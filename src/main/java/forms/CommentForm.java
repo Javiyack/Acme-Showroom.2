@@ -14,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Date;
 
@@ -61,6 +62,7 @@ public class CommentForm extends ClassForm{
 
     @NotBlank
     @SafeHtml
+    @Size(min = 2, max = 255)
     public String getText() {
         return this.text;
     }
@@ -71,6 +73,7 @@ public class CommentForm extends ClassForm{
 
     @NotBlank
     @SafeHtml
+    @Size(min = 2, max = 32)
     public String getTitle() {
         return this.title;
     }
@@ -131,6 +134,7 @@ public class CommentForm extends ClassForm{
 
     @NotBlank
     @SafeHtml
+    @Size(min = 2, max = 32)
     public String getTargetName() {
         return targetName;
     }

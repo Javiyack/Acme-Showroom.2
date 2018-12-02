@@ -24,6 +24,7 @@ import services.ShowroomService;
 import utilities.AbstractTest;
 
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolationException;
 import java.util.Collection;
 
 @ContextConfiguration(locations = {
@@ -42,7 +43,7 @@ public class CU16CreateItem extends AbstractTest {
     private ItemService itemService;
 
     /*
-     * CU7. Crear artículo
+     * CU16. Crear artículo
      *
      * */
     @Test
@@ -51,11 +52,11 @@ public class CU16CreateItem extends AbstractTest {
         Collection <Item> result = itemService.findAll();
         Collection <Showroom> showrooms = showroomService.findByLogedActor();
         Integer count = result.size();
-        if(!showrooms.isEmpty()){
+        if (!showrooms.isEmpty()) {
             Showroom showroom = showrooms.iterator().next();
             Item item = itemService.create(showroom);
             item.setTitle("Drone UHD");
-            item.setDescription("El drone mas economico del mercado");
+            item.setDescription("El drone mas económico del mercado");
             item.setAvailable(true);
             item.setSKU("920615-AAAA09");
             item.setAvailable(true);
@@ -68,24 +69,77 @@ public class CU16CreateItem extends AbstractTest {
             result = itemService.findAll();
             Assert.isTrue(result.size() == count - 1);
         }
+        super.unauthenticate();
     }
 
     /*
-     * CU7. Editar artículo
+     * CU16. Crear artículo. Negative, Nt Logged Actor
      *
      * */
-    @Test
-    public void editItemPositiveTest() {
-        /*
-         * a) you must select a use case that involves a listing and an edition requirement; for that use case, you
-         * must implement at least 10 test cases that provide a good enough coverage of the
-         * statements and the parameter boundaries in your code.
-         *
-         * */
+    @Test(expected = IllegalArgumentException.class)
+    public void createItemNegativeTest1() {
+        Collection <Item> result = itemService.findAll();
+        Collection <Showroom> showrooms = showroomService.findByLogedActor();
+        Integer count = result.size();
+        if (!showrooms.isEmpty()) {
+            Showroom showroom = showrooms.iterator().next();
+            Item item = itemService.create(showroom);
+            item.setTitle("Drone UHD");
+            item.setDescription("El drone mas económico del mercado");
+            item.setAvailable(true);
+            item.setSKU("920615-AAAA09");
+            item.setAvailable(true);
+            item.setPrice(12.00);
+            itemService.save(item);
+        }
+    }
 
-
-
+    /*
+     * CU16. Crear artículo. Negative, Bad SKU
+     *
+     * */
+    @Test(expected = ConstraintViolationException.class)
+    public void createItemNegativeTest2() {
+        super.authenticate("user1");
+        Collection <Item> result = itemService.findAll();
+        Collection <Showroom> showrooms = showroomService.findByLogedActor();
+        Integer count = result.size();
+        if (!showrooms.isEmpty()) {
+            Showroom showroom = showrooms.iterator().next();
+            Item item = itemService.create(showroom);
+            item.setTitle("Drone UHD");
+            item.setDescription("El drone mas económico del mercado");
+            item.setAvailable(true);
+            item.setSKU("9AA615-AAAA09");
+            item.setAvailable(true);
+            item.setPrice(12.00);
+            itemService.save(item);
+        }
+    }
+    /*
+     * CU16. Crear artículo. Negative, Blank title
+     *
+     * */
+    @Test(expected = ConstraintViolationException.class)
+    public void createItemNegativeTest3() {
+        super.authenticate("user1");
+        Collection <Item> result = itemService.findAll();
+        Collection <Showroom> showrooms = showroomService.findByLogedActor();
+        Integer count = result.size();
+        if (!showrooms.isEmpty()) {
+            Showroom showroom = showrooms.iterator().next();
+            Item item = itemService.create(showroom);
+            item.setTitle("");
+            item.setDescription("El drone mas económico del mercado");
+            item.setAvailable(true);
+            item.setSKU("920615-AAAA09");
+            item.setAvailable(true);
+            item.setPrice(12.00);
+            itemService.save(item);
+        }
     }
 
 
 }
+
+

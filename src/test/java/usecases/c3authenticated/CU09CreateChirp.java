@@ -42,7 +42,7 @@ public class CU09CreateChirp extends AbstractTest {
 
 
     /* Write a chirp.
-     * CU 10. Crear Chirp
+     * CU09. Crear Chirp
      */
     @Test
     public void createChirpTest() throws ParseException {
@@ -65,24 +65,24 @@ public class CU09CreateChirp extends AbstractTest {
         final Object testingData[][] = {
                 {// Positive
                         "user1", "Chirp Title",
-                        "Testing chirp description", "Java Topic", "15-06-2050",
+                        "Testing chirp description", "Java Topic", "15-06-2018",
                         null
                 }, {// Negative. Wrong moment. Future
                 "user2", "Chirp Title",
                 "Testing chirp description", "Java Topic", "15-06-2050",
                 null
-        }, {// Negative: without name
+        }, {// Negative: without description
                 "user3", "Chirp Title",
-                "Testing chirp description", "Java Topic", "15-06-2050",
-                null
+                "", "Java Topic", "15-06-2018",
+                ConstraintViolationException.class
         }, {// Negative: with no title
                 "admin", "",
-                "Testing chirp description", "Java Topic", "15-06-2050",
+                "Testing chirp description", "Java Topic", "15-06-2018",
                 ConstraintViolationException.class
         }
                 , {// Negative: description = null
                 "user1", "Chirp Title",
-                null, "Java Topic", "15-06-2050",
+                null, "Java Topic", "15-06-2018",
                 ConstraintViolationException.class
         }
         };
@@ -94,6 +94,7 @@ public class CU09CreateChirp extends AbstractTest {
 
         caught = null;
         try {
+            super.startTransaction();
             super.authenticate((String) testingDataMap.get("actor"));
             Integer userId = super.getEntityId((String) testingDataMap.get("actor"));
             Actor actor = actorService.findOne(userId);
@@ -111,6 +112,8 @@ public class CU09CreateChirp extends AbstractTest {
             caught = oops.getClass();
         }
         super.checkExceptions((Class <?>) testingDataMap.get("expected"), caught);
+        super.unauthenticate();
+        super.rollbackTransaction();
     }
 
 

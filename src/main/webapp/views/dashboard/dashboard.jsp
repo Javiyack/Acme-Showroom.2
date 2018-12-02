@@ -53,7 +53,7 @@
             <jstl:set var="datosChart" value="${chartData}]"/>
             <% out.print("DatosChart: "+ request.getAttribute("datosChart"));%>
             <jstl:set var="chartKey" value="${chart.key}]"/>
-            <input type="checkbox" name="habits" value="${chart.key}">
+            <input type="checkbox" value="${chart.key}">
             <jstl:set var="i" value="${i + 1}"/>
             <div class="w3-container w3-half">
                 <div class="w3-card-4" style="width:100%">

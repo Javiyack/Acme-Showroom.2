@@ -19,6 +19,7 @@ import security.Authority;
 import security.UserAccountService;
 import services.*;
 import utilities.AbstractTest;
+import utilities.Tools;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,16 +34,6 @@ public class CU08EditActor extends AbstractTest {
 
     @Autowired
     private ActorService actorService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private AgentService agentService;
-    @Autowired
-    private UserAccountService userAccountService;
-    @Autowired
-    private ChirpService chirpService;
-    @Autowired
-    private CommentService commentService;
 
     private Map <String, Object> testingDataMap;
 
@@ -56,7 +47,6 @@ public class CU08EditActor extends AbstractTest {
          * y llamamos a la plantilla 'templateCreateUserTest'
          */
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Object userData[][] = (Object[][]) getEditionTestingData();
         for (int i = 0; i < userData.length; i++) {
             testingDataMap = new HashMap <String, Object>();
@@ -65,7 +55,7 @@ public class CU08EditActor extends AbstractTest {
             testingDataMap.put("phone", userData[i][2]);
             testingDataMap.put("email", userData[i][3]);
             testingDataMap.put("address", userData[i][4]);
-            testingDataMap.put("bithdate", formatter.parse((String) userData[i][5]));
+            testingDataMap.put("bithdate", userData[i][5]);
             testingDataMap.put("genere", userData[i][6]);
             testingDataMap.put("photo", userData[i][7]);
             testingDataMap.put("username", userData[i][8]);
@@ -82,20 +72,74 @@ public class CU08EditActor extends AbstractTest {
                 {// Positive
                         "user1", "Dominguez Lopez",
                         "652956526", "test@gmail.com", "Address Test",
-                        "15-06-1972", "MALE", "http://photo.com",
+                        Tools.getPastDate(), "MALE", "http://photo.com",
                         "Username1", "user1", "newPassword", "newPassword",
                         null
-                }, {//Negative: without url
+                }, {//Negative: wrong url
                 "user2", "Fernandez Rodriguez",
                 "652956526", "test@gmail.com", "Address Test",
-                "25-08-1987", "FEMALE", "",
+                Tools.getPastDate(), "FEMALE", "htp/adsasd.asd/",
                 "Username2", "user2", "newPassword", "newPassword",
                 IllegalArgumentException.class
-        }, {// Negative: wrong pasword
+        }, {// Negative: wrong password
                 "admin", "Surname Test",
-                "652956526", "email", "Address Test",
-                "24-03-2001", "MALE", "http://photo.com",
+                "652956526", "test@gmail.com", "Address Test",
+                Tools.getPastDate(), "MALE", "http://photo.com",
                 "Username3", "Password", "newPassword", "newPassword",
+                IllegalArgumentException.class
+        }, {//Negative: without name
+                "", "Fernandez Rodriguez",
+                "652956526", "test@gmail.com", "Address Test",
+                Tools.getPastDate(), "FEMALE", "http://photo.com",
+                "Username2", "user2", "newPassword", "newPassword",
+                IllegalArgumentException.class
+        }, {// Negative: wrong mail
+                "admin", "Surname Test",
+                "652852126", "email", "Address Test",
+                Tools.getPastDate(), "MALE", "http://photo.com",
+                "Username3", "admin", "newPassword", "newPassword",
+                IllegalArgumentException.class
+        },{// Negative: wrong phone
+                "admin", "Surname Test",
+                "XXXX2852126", "email@test.si", "Address Test",
+                Tools.getPastDate(), "MALE", "http://photo.com",
+                "Username3", "admin", "newPassword", "newPassword",
+                IllegalArgumentException.class
+        }, {//Negative: wrong date
+                "user2", "Fernandez Rodriguez",
+                "652956526", "test@gmail.com", "Address Test",
+                null, "FEMALE", "http://photo.com",
+                "Username2", "user2", "newPassword", "newPassword",
+                IllegalArgumentException.class
+        }, {// Negative: Duplicate actor user account name
+                "admin", "Surname Test",
+                "652956526", "test@gmail.com", "Address Test",
+                Tools.getPastDate(), "MALE", "http://photo.com",
+                "user1", "admin", "newPassword", "newPassword",
+                IllegalArgumentException.class
+        }, {// Negative: wrong phone. Blank
+                "admin", "Surname Test",
+                "", "test@gmail.com", "Address Test",
+                Tools.getPastDate(), "MALE", "http://photo.com",
+                "Username3", "admin", "newPassword", "newPassword",
+                IllegalArgumentException.class
+        }, {//Negative: wrong date. Future
+                "user2", "Fernandez Rodriguez",
+                "652956526", "test@gmail.com", "Address Test",
+                Tools.getFutureDate(), "FEMALE", "http://photo.com",
+                "Username2", "user2", "newPassword", "newPassword",
+                IllegalArgumentException.class
+        }, {// Negative: Wrong repeat password
+                "admin", "Surname Test",
+                "652956526", "test@gmail.com", "Address Test",
+                Tools.getPastDate(), "MALE", "http://photo.com",
+                "user1", "admin", "newPassword", "password",
+                IllegalArgumentException.class
+        }, {// Negative: Blank form
+                "", "",
+                "", "", "",
+                "", "", "",
+                "", "", "", "",
                 IllegalArgumentException.class
         }
         };
@@ -110,6 +154,7 @@ public class CU08EditActor extends AbstractTest {
         */
         caught = null;
         try {
+            super.startTransaction();
             super.authenticate((String) testingDataMap.get("name"));
             Integer userId = super.getEntityId((String) testingDataMap.get("name"));
             Actor actor = actorService.findOne(userId);
@@ -146,12 +191,14 @@ public class CU08EditActor extends AbstractTest {
             Assert.isTrue(!binding.hasErrors());
             actor = this.actorService.save(actor);
             this.actorService.flush();
-            super.unauthenticate();
 
         } catch (final Throwable oops) {
             caught = oops.getClass();
+            System.out.println("Caught: " + caught + ", " + oops.getLocalizedMessage());
         }
         super.checkExceptions((Class <?>) testingDataMap.get("expected"), caught);
+        super.unauthenticate();
+        super.rollbackTransaction();
     }
 
 

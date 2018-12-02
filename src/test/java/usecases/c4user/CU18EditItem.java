@@ -22,8 +22,11 @@ import services.ItemService;
 import services.RequestService;
 import services.ShowroomService;
 import utilities.AbstractTest;
+import utilities.BasicosAleatorios;
+import utilities.Tools;
 
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolationException;
 import java.util.Collection;
 
 @ContextConfiguration(locations = {
@@ -46,27 +49,18 @@ public class CU18EditItem extends AbstractTest {
      *
      * */
     @Test
-    public void createItemPositiveTest() {
-        super.authenticate("user1");
-        Collection <Item> result = itemService.findAll();
-        Collection <Showroom> showrooms = showroomService.findByLogedActor();
-        Integer count = result.size();
-        if(!showrooms.isEmpty()){
-            Showroom showroom = showrooms.iterator().next();
-            Item item = itemService.create(showroom);
-            item.setTitle("Drone UHD");
-            item.setDescription("El drone mas economico del mercado");
-            item.setAvailable(true);
-            item.setSKU("920615-AAAA09");
-            item.setAvailable(true);
-            item.setPrice(12.00);
-            itemService.save(item);
-            result = itemService.findAll();
-            Assert.isTrue(result.size() == count + 1);
-            count = result.size();
-            itemService.delete(result.iterator().next());
-            result = itemService.findAll();
-            Assert.isTrue(result.size() == count - 1);
+    public void editItemPositiveTest() {
+        Collection <Item> items = itemService.findAll();
+        if (!items.isEmpty()) {
+            final Item item = items.iterator().next();
+            int version = item.getVersion();
+            super.authenticate(item.getShowroom().getUser().getUserAccount().getUsername());
+            Item itemToEdit = itemService.findOne(item.getId());
+            itemToEdit = editData(itemToEdit, "positive");
+            itemService.save(itemToEdit);
+            itemToEdit = itemService.findOne(item.getId());
+            Assert.isTrue(version != itemToEdit.getVersion());
+            super.unauthenticate();
         }
     }
 
@@ -74,18 +68,84 @@ public class CU18EditItem extends AbstractTest {
      * CU18. Editar artículo
      *
      * */
-    @Test
-    public void editItemPositiveTest() {
-        /*
-         * a) you must select a use case that involves a listing and an edition requirement; for that use case, you
-         * must implement at least 10 test cases that provide a good enough coverage of the
-         * statements and the parameter boundaries in your code.
-         *
-         * */
-
-
-
+    @Test()
+    public void editItemPositiveTestLoop() {
+        Collection <Item> items = itemService.findAll();
+        for (Item item : items) {
+            Item itemToEdit = itemService.findOne(item.getId());
+            itemToEdit = editData(itemToEdit, "positive");
+            System.out.println(" ");
+            System.out.println("-------------------------------------------------------------------------------------------");
+            System.out.println(" ");
+            System.out.println("Positive Data tested");
+            templateEditItemTest(itemToEdit, null);
+        }
+    }
+    /*
+     * CU18. Editar artículo
+     *
+     * */
+    @Test()
+    public void editItemNegativeTestLoop() {
+        Collection <Item> items = itemService.findAll();
+        for (Item item : items) {
+            Item itemToEdit = itemService.findOne(item.getId());
+            itemToEdit = editData(itemToEdit, "negative");
+            System.out.println(" ");
+            System.out.println("-------------------------------------------------------------------------------------------");
+            System.out.println(" ");
+            System.out.println("Negative Data tested");
+            templateEditItemTest(itemToEdit, ConstraintViolationException.class);
+        }
     }
 
+
+    protected void templateEditItemTest(Item item, final Class<?> expected ) {
+        Class <?> caught;
+
+        /*
+         * Simulamos la creación de usuario con los datos cargados en 'testingDataMap'
+         * y luego comprobamos el error esperado
+         */
+        caught = null;
+        try {
+            super.startTransaction();
+            super.authenticate(item.getShowroom().getUser().getUserAccount().getUsername());
+            int version = item.getVersion();
+            System.out.println("Title: " + item.getTitle());
+            System.out.println("Desc: " + item.getDescription());
+            System.out.println("Price: " + item.getPrice());
+            itemService.save(item);
+            item = itemService.findOne(item.getId());
+            Assert.isTrue(version != item.getVersion());
+        } catch (final Throwable oops) {
+            caught = oops.getClass();
+        }
+        super.checkExceptions(expected, caught);
+        super.unauthenticate();
+        super.rollbackTransaction();
+    }
+
+    private Item editData(Item itemToEdit, String testType) {
+        switch (testType) {
+            case "positive":
+                itemToEdit.setTitle(Tools.generateBussinesName());
+                itemToEdit.setDescription(Tools.generateDescription());
+                itemToEdit.setSKU(itemService.generateSKU());
+                break;
+            case "negative":
+                int n = BasicosAleatorios.getNumeroAleatorio(6);
+                itemToEdit.setTitle((n < 1) ? Tools.getBlankText() : Tools.getBusinessName());
+                itemToEdit.setDescription((n < 2) ? Tools.getBlankText() : Tools.generateDescription());
+                itemToEdit.setPrice((n < 3) ? null : 99.90);
+                itemToEdit.setTitle((n == 3) ? Tools.getBlankText() : itemToEdit.getTitle());
+                itemToEdit.setDescription((n == 4) ? Tools.getBlankText() : itemToEdit.getDescription());
+                itemToEdit.setPrice((n == 5) ? null : itemToEdit.getPrice());
+                break;
+            default:
+                break;
+        }
+        return itemToEdit;
+    }
 
 }

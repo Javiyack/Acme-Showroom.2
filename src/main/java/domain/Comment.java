@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Date;
 
@@ -42,6 +43,7 @@ public class Comment extends DomainEntity {
     @NotNull
     @NotBlank
     @SafeHtml
+    @Size(min = 2, max = 255)
     public String getText() {
         return this.text;
     }

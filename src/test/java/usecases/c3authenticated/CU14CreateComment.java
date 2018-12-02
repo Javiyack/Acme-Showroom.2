@@ -28,20 +28,12 @@ public class CU14CreateComment extends AbstractTest {
     @Autowired
     private ActorService actorService;
     @Autowired
-    private UserService userService;
-    @Autowired
-    private AgentService agentService;
-    @Autowired
-    private UserAccountService userAccountService;
-    @Autowired
-    private ChirpService chirpService;
-    @Autowired
     private CommentService commentService;
 
     private Map <String, Object> testingDataMap;
 
     /* Comments
-     * CU 09. Crear comentario
+     * CU14. Crear comentario
      */
     @Test
     public void createCommentTest() throws ParseException {

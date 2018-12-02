@@ -34,6 +34,7 @@ public class Chirp extends DomainEntity implements Comparable<Chirp>{
 
     @NotBlank
     @SafeHtml
+    @Size(min = 2, max = 255)
     public String getDescription() {
         return this.description;
     }
