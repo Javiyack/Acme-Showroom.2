@@ -10,10 +10,6 @@
 
 package utilities;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Properties;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.junit.After;
@@ -27,9 +23,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-
 import security.LoginService;
 import utilities.internal.EclipseConsole;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Properties;
 
 public abstract class AbstractTest {
 
