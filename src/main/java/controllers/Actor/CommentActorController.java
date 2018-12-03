@@ -4,6 +4,8 @@ package controllers.Actor;
 import controllers.AbstractController;
 import domain.Comment;
 import domain.Commentable;
+import domain.Item;
+import domain.Showroom;
 import forms.CommentForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import services.CommentService;
+import services.ItemService;
+import services.ShowroomService;
+import utilities.BasicosAleatorios;
+import utilities.Tools;
 
 import java.util.Collection;
 
@@ -25,6 +31,10 @@ public class CommentActorController extends AbstractController {
 
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private ShowroomService showroomService;
+    @Autowired
+    private ItemService itemService;
 
     // Constructors -----------------------------------------------------------
 
@@ -38,13 +48,13 @@ public class CommentActorController extends AbstractController {
     public ModelAndView list(Integer objectId, final Integer pageSize, String path) {
         ModelAndView result;
         final Collection <Comment> comments;
-        if(objectId!=null){
+        if (objectId != null) {
             comments = this.commentService.findByCommentedObjectId(objectId);
             Commentable commentedObject = this.commentService.findCommentedObjectByCommentedObjectId(objectId);
             result = new ModelAndView("comment/list");
             result.addObject("path", path);
             result.addObject("commented", commentedObject.getObjectName());
-        }else{
+        } else {
             comments = this.commentService.findAll();
             result = new ModelAndView("comment/list");
         }
@@ -134,8 +144,7 @@ public class CommentActorController extends AbstractController {
         if (binding.hasErrors()) {
             result = this.createEditModelAndView(comment);
             result.addObject("commentForm", commentForm);
-        }
-        else
+        } else
             try {
                 comment = this.commentService.save(comment);
                 result = new ModelAndView("comment/display");
@@ -151,6 +160,44 @@ public class CommentActorController extends AbstractController {
             }
         return result;
     }
+
+    // Create a number of Random Items por showroom ---------------------------------------------------------------
+
+    @RequestMapping(value = "/generate", method = RequestMethod.GET)
+    public ModelAndView createRandom(Integer number) {
+        ModelAndView result = new ModelAndView("redirect:/");
+        Collection <Showroom> showrooms = showroomService.findAll();
+        for (Showroom showroom : showrooms) {
+            number = BasicosAleatorios.getNumeroAleatorio(3);
+
+            for (int i = 0; i < number; i++) {
+                Comment comment = generateComment(showroom.getId());
+                commentService.save(comment);
+            }
+            Collection <Item> items = itemService.findByShowroom(showroom);
+            for (Item item : items) {
+                number = BasicosAleatorios.getNumeroAleatorio(2);
+                for (int i = 0; i < number; i++) {
+                    Comment comment = generateComment(item.getId());
+                    commentService.save(comment);
+                }
+            }
+        }
+        return result;
+    }
+
+    private Comment generateComment(int objectId) {
+        Comment comment = commentService.create();
+        comment.setTitle(Tools.generateBussinesName());
+        comment.setText(Tools.generateDescription());
+        comment.setRating((BasicosAleatorios.getNumeroAleatorio(4)));
+        comment.setCommentedObjectId(objectId);
+        for (int n = 0; n < BasicosAleatorios.getNumeroAleatorio(5); n++) {
+            comment.getPictures().add(Tools.getUrlAleatoria());
+        }
+        return comment;
+    }
+
 
     // Auxiliary methods -----------------------------------------------------
     protected ModelAndView createEditModelAndView(final Comment model) {

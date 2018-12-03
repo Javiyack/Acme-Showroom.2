@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import repositories.CommentRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -44,6 +45,7 @@ public class CommentService {
         result.setMoment(new Date());
         result.setRating(0);
         result.setActor(actor);
+        result.setPictures(new ArrayList<String>());
         return result;
     }
 

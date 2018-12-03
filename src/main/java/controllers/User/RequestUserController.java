@@ -2,10 +2,7 @@
 package controllers.User;
 
 import controllers.AbstractController;
-import domain.Actor;
-import domain.CreditCard;
-import domain.Request;
-import domain.User;
+import domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -15,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
+import services.ItemService;
 import services.RequestService;
+import utilities.BasicosAleatorios;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -35,6 +34,8 @@ public class RequestUserController extends AbstractController {
     private RequestService requestService;
     @Autowired
     private ActorService actorService;
+    @Autowired
+    private ItemService itemService;
 
 
 
@@ -148,6 +149,38 @@ public class RequestUserController extends AbstractController {
             return new ModelAndView("redirect:/request/user/received/list.do");
         else
             return new ModelAndView("redirect:/");
+    }
+
+    // Create a number of Random Showrooms ---------------------------------------------------------------
+    @RequestMapping("/generate")
+    public ModelAndView createRandom(Integer number) {
+        ModelAndView result = new ModelAndView("redirect:/request/user/created/list.do");
+        Collection <Item> items = itemService.findAll();
+        for (Item item : items) {
+            number = BasicosAleatorios.getNumeroAleatorio(10);
+            if (number==0) {
+                try {
+                    Request request = generateRequest(item.getId());
+                    request.setItem(item);
+                    requestService.save(request);
+                }catch (Exception oops){
+
+                }
+            }
+        }
+        return result;
+    }
+    private Request generateRequest(int itemId) {
+        Request request = requestService.create(itemId);
+        CreditCard creditCard = new CreditCard();
+        creditCard.setBrandName(CreditCard.MASTERCARD);
+        creditCard.setCardNumber("1111-2222-3333-4444");
+        creditCard.setHolderName("PACO");
+        creditCard.setExpirationMonth("07");
+        creditCard.setExpirationYear("99");
+        creditCard.setCVV("609");
+        request.setCreditCard(creditCard);
+        return request;
     }
 
     // Auxiliary methods -----------------------------------------------------

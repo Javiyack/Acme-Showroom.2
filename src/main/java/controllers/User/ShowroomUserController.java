@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import services.*;
+import utilities.BasicosAleatorios;
+import utilities.Tools;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -127,7 +129,7 @@ public class ShowroomUserController extends AbstractController {
             }
         return result;
     }
-// Delete mediante Post ---------------------------------------------------
+    // Delete mediante Post ---------------------------------------------------
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, params = "delete")
     public ModelAndView delete(@Valid Showroom showroom) {
@@ -139,6 +141,20 @@ public class ShowroomUserController extends AbstractController {
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public ModelAndView remove(@RequestParam int showroomId) {
         ModelAndView result = erase(showroomId);
+        return result;
+    }
+
+    // Create a number of Random Showrooms ---------------------------------------------------------------
+    @RequestMapping("/generate")
+    public ModelAndView createRandom() {
+        ModelAndView result = new ModelAndView("redirect:/showroom/list.do");
+        for(int i = 0; i<BasicosAleatorios.getNumeroAleatorio(20); i++){
+            Showroom showroom = showroomService.create();
+            showroom.setName(Tools.generateBussinesName());
+            showroom.setDescription(Tools.generateDescription());
+            showroom.setLogo(Tools.getUrlAleatoria());
+            showroomService.save(showroom);
+        }
         return result;
     }
 

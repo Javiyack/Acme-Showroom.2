@@ -9,14 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import security.UserAccountService;
-import services.*;
+import services.ActorService;
+import services.ChirpService;
 import utilities.AbstractTest;
 
 import javax.validation.ConstraintViolationException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -28,15 +30,7 @@ public class CU09CreateChirp extends AbstractTest {
     @Autowired
     private ActorService actorService;
     @Autowired
-    private UserService userService;
-    @Autowired
-    private AgentService agentService;
-    @Autowired
-    private UserAccountService userAccountService;
-    @Autowired
     private ChirpService chirpService;
-    @Autowired
-    private CommentService commentService;
 
     private Map <String, Object> testingDataMap;
 

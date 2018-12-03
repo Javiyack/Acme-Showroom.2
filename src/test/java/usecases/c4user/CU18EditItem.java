@@ -11,7 +11,6 @@
 package usecases.c4user;
 
 import domain.Item;
-import domain.Showroom;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 import services.ItemService;
-import services.RequestService;
-import services.ShowroomService;
 import utilities.AbstractTest;
 import utilities.BasicosAleatorios;
 import utilities.Tools;
@@ -37,10 +34,6 @@ import java.util.Collection;
 public class CU18EditItem extends AbstractTest {
 
     // System under test ------------------------------------------------------
-    @Autowired
-    private RequestService requestService;
-    @Autowired
-    private ShowroomService showroomService;
     @Autowired
     private ItemService itemService;
 

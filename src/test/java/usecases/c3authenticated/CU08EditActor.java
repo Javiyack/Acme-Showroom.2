@@ -1,7 +1,9 @@
 
 package usecases.c3authenticated;
 
-import domain.*;
+import domain.Actor;
+import domain.Agent;
+import domain.User;
 import forms.ActorForm;
 import forms.AdminForm;
 import forms.AgentForm;
@@ -16,14 +18,14 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import security.Authority;
-import security.UserAccountService;
-import services.*;
+import services.ActorService;
 import utilities.AbstractTest;
 import utilities.Tools;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {

@@ -17,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
-import services.ItemService;
-import services.RequestService;
 import services.ShowroomService;
 import utilities.AbstractTest;
 import utilities.BasicosAleatorios;
@@ -27,7 +25,6 @@ import utilities.Tools;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.util.Collection;
-import java.util.Map;
 
 @ContextConfiguration(locations = {
         "classpath:spring/junit.xml"
@@ -44,11 +41,7 @@ public class CU17EditShowrrom extends AbstractTest {
 
     // System under test ------------------------------------------------------
     @Autowired
-    private RequestService requestService;
-    @Autowired
     private ShowroomService showroomService;
-    @Autowired
-    private ItemService itemService;
 
     /*
      * CU17. Editar escaparate

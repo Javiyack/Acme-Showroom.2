@@ -1,9 +1,11 @@
 package utilities;
 
+import org.springframework.core.io.ClassPathResource;
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,9 +36,21 @@ public class Tools {
 
     public static List <String> getFileLines(String filename) {
         List <String> result = new ArrayList <>();
+        File resource = null;
+        try {
+            resource = new ClassPathResource(filename).getFile();
+        } catch (IOException e) {
+           String path = filename.split("/")[filename.split("/").length-1];
+            try {
+                resource = new ClassPathResource("files/"+path).getFile();
+            } catch (IOException e1) {
+
+            }
+
+        }
         Charset charset = Charset.forName("ISO-8859-1");
         try {
-            result = Files.readAllLines(Paths.get(filename), charset);
+            result = Files.readAllLines(resource.toPath(), charset);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,7 +94,7 @@ public class Tools {
         return calendar.getTime();
     }
 
-    private static Integer getTope(int tope){
+    private static Integer getTope(int tope) {
         Integer edadTope = BasicosAleatorios.getNumeroAleatorio(tope);
         if (edadTope < 5)
             edadTope = 120;
@@ -208,6 +222,25 @@ public class Tools {
         return businessName;
     }
 
+    public static String getTopic() {
+        String topic;
+        List <String> topics;
+        ClassLoader classLoader = Tools.class.getClassLoader();
+        String filePath;
+        filePath = "src/main/resources/files/topics.txt";
+        topics = getFileLines(filePath);
+        topic = topics.get(BasicosAleatorios.getNumeroAleatorio(topics.size()));
+        return topic;
+    }
+
+
+    public static Double generateRandomDouble(int max) {
+        Double result = 0.;
+        result =Double.valueOf(BasicosAleatorios.getNumeroAleatorio(max))/BasicosAleatorios.getNumeroAleatorio(1,10);
+        result = Math.round(result*100)/100.0d;
+        return result;
+    }
+
     public static String generateBussinesName() {
         String result = "";
         String vocales = "aeiou";
@@ -217,45 +250,44 @@ public class Tools {
             if (si == 0) {
                 result += consonantes.charAt(BasicosAleatorios.getNumeroAleatorio(22));
                 result += vocales.charAt(BasicosAleatorios.getNumeroAleatorio(5));
-            } else if(si==1){
+            } else if (si == 1) {
                 result += consonantes.charAt(BasicosAleatorios.getNumeroAleatorio(22));
                 result += vocales.charAt(BasicosAleatorios.getNumeroAleatorio(5));
                 result += consonantes.charAt(BasicosAleatorios.getNumeroAleatorio(22));
-            }
-            else if(si==2){
+            } else if (si == 2) {
                 result += vocales.charAt(BasicosAleatorios.getNumeroAleatorio(5));
                 result += consonantes.charAt(BasicosAleatorios.getNumeroAleatorio(22));
-            }else if(si==3){
+            } else if (si == 3) {
                 result += vocales.charAt(BasicosAleatorios.getNumeroAleatorio(5));
                 result += consonantes.charAt(BasicosAleatorios.getNumeroAleatorio(22));
                 result += vocales.charAt(BasicosAleatorios.getNumeroAleatorio(5));
             }
         }
-        String c = result.substring(0,1);
-        return result.replaceFirst(c,c.toUpperCase());
+        String c = result.substring(0, 1);
+        return result.replaceFirst(c, c.toUpperCase());
     }
 
-    public static String generateDescription(){
+    public static String generateDescription() {
         String result = "";
-        for (int i = 0; i < BasicosAleatorios.getNumeroAleatorio(20, 40); i++) {
+        for (int i = 0; i < BasicosAleatorios.getNumeroAleatorio(20, 35); i++) {
             result += generateBussinesName().toLowerCase();
             result += " ";
         }
         result = result.trim() + ".";
-        String c = result.substring(0,1);
-        return result.replaceFirst(c,c.toUpperCase());
+        String c = result.substring(0, 1);
+        return result.replaceFirst(c, c.toUpperCase());
     }
 
     public static String getAddress() {
         String addressName;
-        String filePath = "src/main/resources/files/razon-social.txt";
+        String filePath = "src/main/resources/files/calles-sevilla.txt";
         List <String> addressNames = getFileLines(filePath);
         addressName = addressNames.get(BasicosAleatorios.getNumeroAleatorio(addressNames.size()));
         addressName += ", " + BasicosAleatorios.getNumeroAleatorio(1, 150);
         return addressName;
     }
 
-    public static String getDescription() {
+    public static String getLoremIpsumDescription() {
         String res = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vitae finibus mauris. " +
                 "Quisque malesuada, est eget placerat faucibus, nulla erat feugiat ligula, ut viverra orci arcu pretium odio. " +
                 "Maecenas vulputate elit nec molestie fringilla turpis duis.";

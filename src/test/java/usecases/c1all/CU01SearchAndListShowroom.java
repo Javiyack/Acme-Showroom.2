@@ -9,8 +9,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import services.ActorService;
-import services.ItemService;
 import services.ShowroomService;
 import utilities.AbstractTest;
 
@@ -26,10 +24,6 @@ import java.util.Map;
 @Transactional
 public class CU01SearchAndListShowroom extends AbstractTest {
 
-    @Autowired
-    private ActorService actorService;
-    @Autowired
-    private ItemService itemService;
     @Autowired
     private ShowroomService showroomService;
     private Map <String, Object> testingDataMap;

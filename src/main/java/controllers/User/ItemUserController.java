@@ -4,6 +4,7 @@ package controllers.User;
 import controllers.AbstractController;
 import domain.Comment;
 import domain.Item;
+import domain.Showroom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import services.*;
+import utilities.BasicosAleatorios;
+import utilities.Tools;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -168,6 +171,28 @@ public class ItemUserController extends AbstractController {
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public ModelAndView remove(@RequestParam  int itemId,  int showroomId) {
         ModelAndView result = erase(itemId, showroomId);
+        return result;
+    }
+
+
+    // Create a number of Random Items por showroom ---------------------------------------------------------------
+
+    @RequestMapping(value = "/generate", method = RequestMethod.GET)
+    public ModelAndView createRandom(Integer number) {
+        ModelAndView result = new ModelAndView("redirect:/item/list.do");
+        Collection<Showroom> showrooms = showroomService.findByLogedActor();
+        for (Showroom showroom:showrooms) {
+                number = BasicosAleatorios.getNumeroAleatorio(50);
+            for(int i = 0; i<number;i++){
+                Item item = itemService.create(showroom);
+                item.setTitle(Tools.generateBussinesName());
+                String desc = Tools.generateDescription();
+                item.setDescription(desc);
+                item.setAvailable((BasicosAleatorios.getNumeroAleatorio(10)<2)?false:true);
+                item.setPrice(Tools.generateRandomDouble(200));
+                itemService.save(item);
+            }
+        }
         return result;
     }
 

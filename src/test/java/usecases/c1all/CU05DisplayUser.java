@@ -11,13 +11,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import services.ActorService;
-import services.ItemService;
 import services.ShowroomService;
 import utilities.AbstractTest;
 
 import java.text.ParseException;
 import java.util.Collection;
-import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -35,10 +33,7 @@ public class CU05DisplayUser extends AbstractTest {
     @Autowired
     private ActorService actorService;
     @Autowired
-    private ItemService itemService;
-    @Autowired
     private ShowroomService showroomService;
-    private Map <String, Object> testingDataMap;
 
 
     /*

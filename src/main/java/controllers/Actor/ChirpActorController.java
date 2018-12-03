@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.ChirpService;
+import utilities.BasicosAleatorios;
+import utilities.Tools;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -44,7 +46,7 @@ public class ChirpActorController extends AbstractController {
             chirps = chirpService.findByActorId(actorId);
             result = new ModelAndView("chirp/actor/stream");
             result.addObject("legend", "actorChirps");
-            result.addObject("owner", actorService.findOne((actorId!=null)?actorId:-1).getUserAccount().getUsername());
+            result.addObject("owner", actorService.findOne((actorId != null) ? actorId : -1).getUserAccount().getUsername());
         } else {
             chirps = this.chirpService.findByLoggedActor();
             result = new ModelAndView("chirp/actor/list");
@@ -93,7 +95,7 @@ public class ChirpActorController extends AbstractController {
     @RequestMapping(value = "/topic/list", method = RequestMethod.POST)
     public ModelAndView listingByTopic(HttpServletRequest req) {
         return listByTopic(req.getParameter("topic"),
-                Integer.parseInt((req.getParameter("pageSize")!=null)?req.getParameter("pageSize"):"5"));
+                Integer.parseInt((req.getParameter("pageSize") != null) ? req.getParameter("pageSize") : "5"));
     }
 
     // Display user -----------------------------------------------------------
@@ -148,6 +150,23 @@ public class ChirpActorController extends AbstractController {
                     return this.createMessageModelAndView("panic.message.text", "/");
                 }
             }
+        return result;
+    }
+// Create a number of Chirps Items por showroom ---------------------------------------------------------------
+
+    @RequestMapping(value = "/generate", method = RequestMethod.GET)
+    public ModelAndView createRandom(Integer number) {
+        ModelAndView result = new ModelAndView("redirect:/");
+        if (number == null) {
+            number = BasicosAleatorios.getNumeroAleatorio(36);
+        }
+        for (int i = 0; i < number; i++) {
+            Chirp chirp = chirpService.create();
+            chirp.setTitle(Tools.generateBussinesName());
+            chirp.setDescription(Tools.generateDescription());
+            chirp.setTopic((BasicosAleatorios.getNumeroAleatorio(3) < 2) ? Tools.getTopic() : "");
+            chirpService.save(chirp);
+        }
         return result;
     }
 

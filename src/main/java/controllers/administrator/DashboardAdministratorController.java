@@ -104,7 +104,8 @@ public class DashboardAdministratorController extends AbstractController {
         if (!chirpsPT.isEmpty()) {
             for (Object object : chirpsPT) {
                 final Object[] line = (Object[]) object;
-                chirpsPerTopic.put((String) line[0], line[1]);
+                if(!line[0].equals(""))
+                    chirpsPerTopic.put((String) line[0], line[1]);
             }
         }
         levelB.put("chirpsPerTopic", chirpsPerTopic);
@@ -129,13 +130,13 @@ public class DashboardAdministratorController extends AbstractController {
         levelA.put("commentsPerItem", commentsPerItem);
 	 	/*	3. 	The average, the minimum, the maximum, and the standard deviation of the
 		number of comments per user */
-       Map <String, Object> commentsPerUser = new HashMap <>();
+        Map <String, Object> commentsPerUser = new HashMap <>();
         commentsPerUser.put("avg", administratorService.findAverageCommentsPerUser() != null ? administratorService.findAverageCommentsPerUser() : 0);
         commentsPerUser.put("min", administratorService.findMinimunCommentsPerUser() != null ? administratorService.findMinimunCommentsPerUser() : 0);
         commentsPerUser.put("max", administratorService.findMaximunCommentsPerUser() != null ? administratorService.findMaximunCommentsPerUser() : 0);
         commentsPerUser.put("stdev", administratorService.findStdevCommentsPerUser() != null ? administratorService.findStdevCommentsPerUser() : 0);
         levelA.put("commentsPerUser", commentsPerUser);
-     dashboard.put("levelA", levelA);
+        dashboard.put("levelA", levelA);
 
 
         result.addObject("dashboard", dashboard);

@@ -2,7 +2,6 @@
 package usecases.c3authenticated;
 
 import domain.Actor;
-import domain.Comment;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +9,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import security.UserAccountService;
-import services.*;
+import services.ActorService;
 import utilities.AbstractTest;
 
-import javax.validation.ConstraintViolationException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {

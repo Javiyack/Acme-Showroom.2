@@ -57,7 +57,7 @@
             <spring:message code="moment.pattern" var="intercionalizedPattern"/>
             <fmt:formatDate value="${row.moment}" pattern="${intercionalizedPattern}" var="intercionalizedMoment"/>
             <acme:urlColumn value="${intercionalizedMoment}" title="label.moment" href="${url}" css="iButton"/>
-            <acme:urlColumn value="${row.item.title}" title="label.item" href="${url}" css="iButton"/>
+            <acme:urlColumn value="${row.item.title}" title="label.item" href="${url}" css="iButton" sortable="true"/>
             <acme:urlColumn value="${row.status}" title="label.status" sortable="true" href="${url}" css="iButton"/>
             <jstl:set var="owns"
                       value="${rol=='user' and (logedActor eq row.user.userAccount or  logedActor eq row.item.showroom.user.userAccount)}"/>

@@ -78,9 +78,7 @@
         if (values != null && values.length != 0
         && keys != null && keys.length != 0
         && keys.length==values.length) {
-            System.out.println("You have selected: ");
             for (int i = 0; i < values.length; i++) {
-                System.out.println(values[i]);
                 %>
         newChart(<%=keys[i]%>, <%=values[i]%>, "", "light1", "column");
         <%
@@ -95,10 +93,9 @@
                     text: title
                 },
                 data: [{
-                    type: type,// "dognut"
+                    type: dognut,// "dognut"
                     startAngle: 270,
                     yValueFormatString: "##0.00\"\"",
-                    indexLabel: "{label} {y}",
                     dataPoints: dataModel
                 }]
             });

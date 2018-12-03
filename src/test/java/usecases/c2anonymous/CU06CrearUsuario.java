@@ -14,8 +14,6 @@ import security.Authority;
 import security.UserAccount;
 import security.UserAccountService;
 import services.ActorService;
-import services.AgentService;
-import services.UserService;
 import utilities.AbstractTest;
 
 import javax.validation.ConstraintViolationException;
@@ -35,10 +33,6 @@ public class CU06CrearUsuario extends AbstractTest {
 
 	@Autowired
     private ActorService		actorService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private AgentService agentService;
     @Autowired
 	private UserAccountService	userAccountService;
 	private Map<String, Object> testingDataMap;

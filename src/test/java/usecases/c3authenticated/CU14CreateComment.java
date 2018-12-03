@@ -1,7 +1,8 @@
 
 package usecases.c3authenticated;
 
-import domain.*;
+import domain.Actor;
+import domain.Comment;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import security.UserAccountService;
-import services.*;
+import services.ActorService;
+import services.CommentService;
 import utilities.AbstractTest;
 
 import javax.validation.ConstraintViolationException;
@@ -80,7 +81,7 @@ public class CU14CreateComment extends AbstractTest {
             comment.setText((String) testingDataMap.get("text"));
             comment.setRating((Integer) testingDataMap.get("rating"));
             comment.setMoment((Date) testingDataMap.get("moment"));
-            comment.setPictures((Collection) testingDataMap.get("pictures"));
+            comment.setPictures((Collection<String>) testingDataMap.get("pictures"));
             comment = this.commentService.save(comment);
             super.unauthenticate();
             Assert.isTrue(comment.getId()!=0);

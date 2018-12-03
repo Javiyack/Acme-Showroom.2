@@ -18,9 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
-import services.ItemService;
 import services.RequestService;
-import services.ShowroomService;
 import utilities.AbstractTest;
 
 import javax.transaction.Transactional;
@@ -35,11 +33,6 @@ public class CU21CrateRequest extends AbstractTest {
     // System under test ------------------------------------------------------
     @Autowired
     private RequestService requestService;
-    @Autowired
-    private ShowroomService showroomService;
-    @Autowired
-    private ItemService itemService;
-
 
     /*
      * CU21. Solicitar artículo

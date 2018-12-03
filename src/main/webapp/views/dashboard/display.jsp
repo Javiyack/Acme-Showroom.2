@@ -83,7 +83,6 @@
                     type: type,// "column", "doughnut", "pie"
                     startAngle: 270,
                     yValueFormatString: "##0.00\"\"",
-                    indexLabel: "{label} {y}",
                     dataPoints: dataModel
                 }]
             });
