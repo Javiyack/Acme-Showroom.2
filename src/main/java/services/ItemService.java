@@ -150,4 +150,13 @@ public class ItemService {
         Assert.isTrue(actor instanceof User, "msg.not.owned.block");
         return itemRepository.findByKeyWordAndLogedActor(word, actor.getId());
     }
+
+    public Collection <Item> findRequestedItems() {
+        return itemRepository.findRequestedItems();
+    }
+
+    public Collection <Item> findNotRequestedItems() {
+        return itemRepository.findNotRequestedItems();
+    }
+
 }

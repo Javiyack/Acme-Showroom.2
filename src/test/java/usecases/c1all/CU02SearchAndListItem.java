@@ -71,11 +71,11 @@ public class CU02SearchAndListItem extends AbstractTest {
             item.setSKU("920615-AAAA09");
             item.setAvailable(true);
             item.setPrice(10.00);
-            itemService.save(item);
+            item = itemService.save(item);
             result = itemService.findAll();
             Assert.isTrue(result.size() == count + 1);
             count = result.size();
-            itemService.delete(result.iterator().next());
+            itemService.delete(item);
             result = itemService.findAll();
             Assert.isTrue(result.size() == count - 1);
         }

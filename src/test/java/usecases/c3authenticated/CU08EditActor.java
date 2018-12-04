@@ -196,7 +196,6 @@ public class CU08EditActor extends AbstractTest {
 
         } catch (final Throwable oops) {
             caught = oops.getClass();
-            System.out.println("Caught: " + caught + ", " + oops.getLocalizedMessage());
         }
         super.checkExceptions((Class <?>) testingDataMap.get("expected"), caught);
         super.unauthenticate();

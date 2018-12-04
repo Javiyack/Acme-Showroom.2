@@ -58,26 +58,20 @@ public class CU16CreateItem extends AbstractTest {
             item.setSKU("920615-AAAA09");
             item.setAvailable(true);
             item.setPrice(12.00);
-            itemService.save(item);
+            item = itemService.save(item);
             result = itemService.findAll();
             Assert.isTrue(result.size() == count + 1);
-            count = result.size();
-            itemService.delete(result.iterator().next());
-            result = itemService.findAll();
-            Assert.isTrue(result.size() == count - 1);
         }
         super.unauthenticate();
     }
 
     /*
-     * CU16. Crear artículo. Negative, Nt Logged Actor
+     * CU16. Crear artículo. Negative, Not Logged Actor
      *
      * */
     @Test(expected = IllegalArgumentException.class)
     public void createItemNegativeTest1() {
-        Collection <Item> result = itemService.findAll();
         Collection <Showroom> showrooms = showroomService.findByLogedActor();
-        Integer count = result.size();
         if (!showrooms.isEmpty()) {
             Showroom showroom = showrooms.iterator().next();
             Item item = itemService.create(showroom);
@@ -97,10 +91,9 @@ public class CU16CreateItem extends AbstractTest {
      * */
     @Test(expected = ConstraintViolationException.class)
     public void createItemNegativeTest2() {
+        super.startTransaction();
         super.authenticate("user1");
-        Collection <Item> result = itemService.findAll();
         Collection <Showroom> showrooms = showroomService.findByLogedActor();
-        Integer count = result.size();
         if (!showrooms.isEmpty()) {
             Showroom showroom = showrooms.iterator().next();
             Item item = itemService.create(showroom);
@@ -112,6 +105,7 @@ public class CU16CreateItem extends AbstractTest {
             item.setPrice(12.00);
             itemService.save(item);
         }
+        super.unauthenticate();
     }
     /*
      * CU16. Crear artículo. Negative, Blank title

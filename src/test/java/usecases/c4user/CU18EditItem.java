@@ -18,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 import services.ItemService;
+import services.RequestService;
 import utilities.AbstractTest;
 import utilities.BasicosAleatorios;
 import utilities.Tools;
@@ -36,6 +37,8 @@ public class CU18EditItem extends AbstractTest {
     // System under test ------------------------------------------------------
     @Autowired
     private ItemService itemService;
+    @Autowired
+    private RequestService requestService;
 
     /*
      * CU18. Editar artículo
@@ -63,37 +66,31 @@ public class CU18EditItem extends AbstractTest {
      * */
     @Test()
     public void editItemPositiveTestLoop() {
-        Collection <Item> items = itemService.findAll();
+        Collection <Item> items = itemService.findNotRequestedItems();
+
         for (Item item : items) {
             Item itemToEdit = itemService.findOne(item.getId());
             itemToEdit = editData(itemToEdit, "positive");
-            System.out.println(" ");
-            System.out.println("-------------------------------------------------------------------------------------------");
-            System.out.println(" ");
-            System.out.println("Positive Data tested");
             templateEditItemTest(itemToEdit, null);
         }
     }
+
     /*
      * CU18. Editar artículo
      *
      * */
     @Test()
     public void editItemNegativeTestLoop() {
-        Collection <Item> items = itemService.findAll();
+        Collection <Item> items = itemService.findNotRequestedItems();
         for (Item item : items) {
             Item itemToEdit = itemService.findOne(item.getId());
             itemToEdit = editData(itemToEdit, "negative");
-            System.out.println(" ");
-            System.out.println("-------------------------------------------------------------------------------------------");
-            System.out.println(" ");
-            System.out.println("Negative Data tested");
             templateEditItemTest(itemToEdit, ConstraintViolationException.class);
         }
     }
 
 
-    protected void templateEditItemTest(Item item, final Class<?> expected ) {
+    protected void templateEditItemTest(Item item, final Class <?> expected) {
         Class <?> caught;
 
         /*
@@ -105,9 +102,6 @@ public class CU18EditItem extends AbstractTest {
             super.startTransaction();
             super.authenticate(item.getShowroom().getUser().getUserAccount().getUsername());
             int version = item.getVersion();
-            System.out.println("Title: " + item.getTitle());
-            System.out.println("Desc: " + item.getDescription());
-            System.out.println("Price: " + item.getPrice());
             itemService.save(item);
             item = itemService.findOne(item.getId());
             Assert.isTrue(version != item.getVersion());

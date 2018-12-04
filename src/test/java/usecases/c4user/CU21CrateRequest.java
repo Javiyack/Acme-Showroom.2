@@ -11,6 +11,7 @@
 package usecases.c4user;
 
 import domain.CreditCard;
+import domain.Item;
 import domain.Request;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,10 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
+import services.ItemService;
 import services.RequestService;
 import utilities.AbstractTest;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
+import java.util.Iterator;
 
 @ContextConfiguration(locations = {
         "classpath:spring/junit.xml"
@@ -33,6 +37,8 @@ public class CU21CrateRequest extends AbstractTest {
     // System under test ------------------------------------------------------
     @Autowired
     private RequestService requestService;
+    @Autowired
+    private ItemService itemService;
 
     /*
      * CU21. Solicitar artículo
@@ -142,27 +148,40 @@ public class CU21CrateRequest extends AbstractTest {
 
         caught = null;
         try {
-            int itemId;
-            itemId = super.getEntityId((String) testingData[0]);
-            super.authenticate((String) testingData[1]);
-            Request request = requestService.create(itemId);
-            request.setStatus((String) testingData[2]);
-            CreditCard creditCard = new CreditCard();
-            creditCard.setHolderName((String) testingData[3]);
-            creditCard.setBrandName((String) testingData[4]);
-            creditCard.setCardNumber((String) testingData[5]);
-            creditCard.setExpirationYear((String) testingData[6]);
-            creditCard.setExpirationMonth((String) testingData[7]);
-            creditCard.setCVV((String) testingData[8]);
-            request.setCreditCard(creditCard);
-            request = requestService.save(request);
-            requestService.flush();
-            Assert.isTrue(request.getId() != 0);
+            Collection <Item> notRequestedItems = itemService.findNotRequestedItems();
+            if (notRequestedItems.isEmpty()) {
+                Iterator<Item> itemIterator = notRequestedItems.iterator();
+                int userId = super.getEntityId((String) testingData[1]);
+                Item item=null;
+                do{
+                    item = itemIterator.next();
+                }while (itemIterator.hasNext() && !item.getAvailable() && item.getShowroom().getUser().getId()==userId);
+                if(item!=null){
+                    super.authenticate((String) testingData[1]);
+                    Request request = requestService.create(item.getId());
+                    request.setStatus((String) testingData[2]);
+                    CreditCard creditCard = new CreditCard();
+                    creditCard.setHolderName((String) testingData[3]);
+                    creditCard.setBrandName((String) testingData[4]);
+                    creditCard.setCardNumber((String) testingData[5]);
+                    creditCard.setExpirationYear((String) testingData[6]);
+                    creditCard.setExpirationMonth((String) testingData[7]);
+                    creditCard.setCVV((String) testingData[8]);
+                    request.setCreditCard(creditCard);
+                    request = requestService.save(request);
+                    requestService.flush();
+                    Assert.isTrue(request.getId() != 0);
+                }else {
+                    if(testingData[9]!=null)
+                        Assert.isTrue(false);
+                }
+            } else {
+                if(testingData[9]!=null)
+                    Assert.isTrue(false);
+            }
         } catch (final Throwable oops) {
             caught = oops.getClass();
         }
         this.checkExceptions((Class <?>) testingData[9], caught);
-
     }
-
 }

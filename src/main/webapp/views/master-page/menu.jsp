@@ -161,7 +161,6 @@
                     code="master.page.dashboard"/>
             </a>
             <!-- Trigger/Open The Modal -->
-
             <a id="myBtn" class="w3-bar-item w3-button w3-padding w3-xlarge" name="menuItem"> <i
                     class="fa fa-user-plus fa-fw w3-margin-right"></i> <spring:message
                     code="label.new.actor"/>

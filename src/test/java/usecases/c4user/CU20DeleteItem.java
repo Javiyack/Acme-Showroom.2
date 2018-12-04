@@ -52,9 +52,14 @@ public class CU20DeleteItem extends AbstractTest {
             Item item = items.iterator().next();
             super.authenticate(item.getShowroom().getUser().getUserAccount().getUsername());
             Item itemToDelete = itemService.findOne(item.getId());
-            itemService.delete(itemToDelete);
-            items = itemService.findAll();
-            Assert.isTrue(!items.contains(item.getId()));
+            Collection <Request> requests = requestService.findByItemId(itemToDelete.getId());
+            if (requests.isEmpty()) {
+                itemService.delete(itemToDelete);
+                items = itemService.findAll();
+                Assert.isTrue(!items.contains(item.getId()));
+            } else {
+                Assert.isTrue(true);
+            }
             super.unauthenticate();
         }
     }  /*
@@ -70,9 +75,14 @@ public class CU20DeleteItem extends AbstractTest {
             Item item = items.iterator().next();
             super.authenticate(item.getShowroom().getUser().getUserAccount().getUsername());
             Item itemToDelete = itemService.findOne(item.getId());
-            itemService.delete(itemToDelete);
-            items = itemService.findAll();
-            Assert.isTrue(!items.contains(item));
+            Collection <Request> requests = requestService.findByItemId(itemToDelete.getId());
+            if (requests.isEmpty()) {
+                itemService.delete(itemToDelete.getId());
+                items = itemService.findAll();
+                Assert.isTrue(!items.contains(item.getId()));
+            } else {
+                Assert.isTrue(true);
+            }
             super.unauthenticate();
         }
     }

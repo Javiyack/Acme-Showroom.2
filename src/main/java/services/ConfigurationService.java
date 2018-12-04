@@ -99,7 +99,6 @@ public class ConfigurationService {
 
 	public List<String> findTabooWords() {
 		Configuration cfg = configurationRepository.findCfg();
-		System.out.println();
 		return (List<String>) cfg.getTabooWords();
 	}
 }

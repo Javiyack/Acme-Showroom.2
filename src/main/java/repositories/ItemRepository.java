@@ -31,4 +31,11 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 			" where i.showroom.user.id=?1")
 	Collection<Item> findByUserId(int id);
 
+
+	@Query("select i from Item i where i in (select r.item from Request r)")
+	Collection<Item> findRequestedItems();
+
+	@Query("select i from Item i where i not in (select r.item from Request r)")
+	Collection<Item> findNotRequestedItems();
+
 }

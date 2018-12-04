@@ -77,13 +77,15 @@ public class CU01SearchAndListShowroom extends AbstractTest {
         showroom.setName("Lalalá");
         showroom.setDescription("Todo sobre eurovisión");
         showroom.setLogo("http://www.qwerty.jpg");
-        showroomService.save(showroom);
+        showroom = showroomService.save(showroom);
         result = showroomService.findAll();
         Assert.isTrue(result.size() == count + 1);
         count = result.size();
-        showroomService.delete(result.iterator().next());
+        showroomService.delete(showroom);
+        showroomService.flush();
         result = showroomService.findAll();
         Assert.isTrue(result.size() == count - 1);
+        super.unauthenticate();
     }
 
 

@@ -73,10 +73,6 @@ public class CU17EditShowrrom extends AbstractTest {
         for (Showroom showroom : showrooms) {
             Showroom showroomToEdit = showroomService.findOne(showroom.getId());
             showroomToEdit = editData(showroomToEdit, "positive");
-            System.out.println(" ");
-            System.out.println("-------------------------------------------------------------------------------------------");
-            System.out.println(" ");
-            System.out.println("Positive Data tested");
             templateEditShowroomTest(showroomToEdit, null);
         }
     }
@@ -90,10 +86,6 @@ public class CU17EditShowrrom extends AbstractTest {
         for (Showroom showroom : showrooms) {
             Showroom showroomToEdit = showroomService.findOne(showroom.getId());
             showroomToEdit = editData(showroomToEdit, "negative");
-            System.out.println(" ");
-            System.out.println("-------------------------------------------------------------------------------------------");
-            System.out.println(" ");
-            System.out.println("Negative Data tested");
             templateEditShowroomTest(showroomToEdit, ConstraintViolationException.class);
         }
     }
@@ -111,9 +103,6 @@ public class CU17EditShowrrom extends AbstractTest {
             super.startTransaction();
             super.authenticate(showroom.getUser().getUserAccount().getUsername());
             int version = showroom.getVersion();
-            System.out.println("Name: " + showroom.getName());
-            System.out.println("Desc: " + showroom.getDescription());
-            System.out.println("Logo: " + showroom.getLogo());
             showroomService.save(showroom);
             showroom = showroomService.findOne(showroom.getId());
             Assert.isTrue(version != showroom.getVersion());
